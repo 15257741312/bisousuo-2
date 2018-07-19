@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:91:"D:\phpstudy\PHPTutorial\WWW\bisousuo-2\public/../application/mobile\view\login\registe.html";i:1531985616;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:91:"D:\phpstudy\PHPTutorial\WWW\bisousuo-2\public/../application/mobile\view\login\registe.html";i:1531989700;}*/ ?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -9,12 +9,21 @@
 		<link rel="stylesheet" type="text/css" href="/bisousuo-2/public/static/mobile/css/bi_style.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/bi_style.css"/>
 		<script type="text/javascript" src="/bisousuo-2/public/static/js/jquery-1.9.1.min.js"></script>
+		<style type="text/css">
+			.sendout{
+				 background-color: #a6a6a6;
+			}
+			.huoquuanzhengma{
+				outline: none;
+    			border: none;
+			}    
+		</style>
 	</head>
 	<body>
 		<div id="wrap" class="flex-wrap flex-vertical">
 			<!--top-->
 			<header id="aui-header" class="baike2Top" style="position:fixed;top:0;background-color:#fff;z-index: 999;">
-				<a href="javascript:history.go(-1)"><img src="/bisousuo-2/public/static/mobile/image/baike_04_03.jpg"/></a>
+				<a href="<?php echo url('My/index'); ?>"><img src="/bisousuo-2/public/static/mobile/image/baike_04_03.jpg"/></a>
 	      <span>注册</span>
 			</header>
 			<!--内容-->
@@ -25,15 +34,15 @@
 			    </div>
 			    <p class="yanzheng"><span class="shoujihao"></span></p>
 			    <div class="loginYinput">
-			        <label for="yan">验证码</label><input type="text" name="code" required placeholder="请输入验证码" id="yan" /><span class="huoquuanzhengma">获取验证码</span>
+			        <label for="yan">验证码</label><input type="text" name="code" required placeholder="请输入验证码" id="yan" /><button class="huoquuanzhengma">获取验证码</button>
 			    </div>
 			    <p class="yanzheng"><span class="yanzhengma"></span></p>
 			    <div class="loginYinput">
-			        <label for="pwd">密码</label><input type="password" name="pass" class="pass1" required placeholder="请输入6-19位密码" id="pwd" />
+			        <label for="pwd">密码</label><input type="password" name="pass" class="pass1" required placeholder="请输入6-18位密码" id="pwd" />
 			    </div>
 			    <p class="yanzheng"><span class="mima1"></span></p>
 			    <div class="loginYinput">
-			        <label for="pwdt">密码</label><input type="password" required class="pass2" placeholder="请再次输入6-19位密码" id="pwdt" />
+			        <label for="pwdt">确认密码</label><input type="password" required class="pass2" placeholder="请再次输入6-18位密码" id="pwdt" />
 			    </div>
 			    <p class="yanzheng"><span class="mima2"></span></p>
 			    <div class="loginYD">
@@ -44,22 +53,61 @@
 		</div>
 	</body>
   <script type="text/javascript">
+  	function countdown(obj){
+        var wait = 120,myCountDown;
+        if(wait==120){
+            var timeflag = setInterval(function(){
+                if(wait>0){
+                    $(obj).text(wait+'秒后重发');
+                    $(obj).attr('disabled','disabled').addClass("sendout");
+                    wait--;
+                }else {
+                    wait=120;
+                    $(obj).text('重新发送验证码');
+                    $(obj).removeAttr('disabled').removeClass("sendout");
+                    clearInterval(timeflag);
+                }
+            },1000);
+        }
+    }
   	$(function(){
+  		$("#tel").blur(function(){
+  			if((/^1[34578]\d{9}$/.test($("#tel").val()))){
+  				$('.shoujihao').text("");
+  			}
+  		})
+
+  		$("#yan").blur(function(){
+  			if($("input[name='code']").val().length==6){
+  				$('.yanzhengma').text("");
+  			}
+  		})
+
+  		$("#pwd").blur(function(){
+  			if($("#pwd").val().length>=6 && $("#pwd").val().length<=18){
+  				$('.mima1').text("");
+  			}
+  		})
+
+  		$("#pwdt").blur(function(){
+  			if($("pwdt").val()!=""){
+  				$(".mima2").text("");
+  			}
+  		})
+
   		$(".huoquuanzhengma").click(function(){
+  			var self=$(this);
   			var tel=$("#tel").val();
   			if(tel=="") {
   				$('.shoujihao').text("手机号未填写");
   				return false;
   			}
-  			if(tel.length!==11){
-	  			$('.shoujihao').text("手机号填写不正确");
+  			if(!(/^1[34578]\d{9}$/.test(tel))){
+	  			$('.shoujihao').text("手机号格式不正确");
 	  			return false;
 	  		}
-  			if(tel.length==11){
-	  			$('.shoujihao').text("");
-	  			return true;
-	  		}
-  			$(this).css("disabled");
+  		
+  			
   			var code=$("input[name='code']").val();
 	  		$.ajax({
 	  			url : "<?php echo url('Login/sendSms'); ?>",
@@ -73,6 +121,8 @@
 	  				if(res=="no"){
 	  					$('.shoujihao').text("该账号已被注册");
 	  					return false;
+	  				}else if(res=="yes"){
+	  					countdown(self);
 	  				}
 	  			},
 	  			error : function(msg){
@@ -82,7 +132,7 @@
 	  	});
 
 	  	$(".reg").click(function(){
-	  		if($("#tel").val()!==/^1[34578]\d{9}$/){
+	  		if(!/^1[34578]\d{9}$/.test($("#tel").val())){
 	  			$('.shoujihao').text("手机号填写不正确");
 	  			return false;
 	  		}
@@ -92,22 +142,16 @@
 	  		}
 	  		var pass1=$(".pass1").val();
 	  		var pass2=$(".pass2").val();
-	  		if(pass1==""){
-	  			$('.mima1').text("密码不能为空");
+	  		if(pass1.length<6 || pass1.length>18){
+	  			$('.mima1').text("请输入6-18位密码");
 	  			return false;
 	  		}
-	  		if(pass1!==""){
-	  			$('.mima1').text("");
-	  			return true;
-	  		}
+
 	  		if(pass1!=pass2){
-	  			$('.mima1').text("两次密码不一致");
+	  			$('.mima2').text("两次密码不一致");
 	  			return false;
 	  		}
-	  		if(pass1==pass2){
-	  			$('.mima1').text("");
-	  			return true;
-	  		}
+
 	  		$.ajax({
 	  			url : '<?php echo url("Login/registe"); ?>',
 	  			type : 'post',

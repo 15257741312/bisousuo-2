@@ -28,14 +28,14 @@ class Login extends Common{
             $map['password']=md5(input("pass"));
 	        $res=Db::name("user")->where($map)->find();
 	        if(empty($res)){
-	            return '用户名或密码错误';
+	            return 1;     //用户名或密码错误
             }
             $data['token']=rand(0,999999999).'_'.$_SERVER['REMOTE_ADDR'];
 	        Session::set("tel",input("tel"));
 	        Session::set("nickname",$res['nickname']);
 	        Session::set('token',$data['token']);
 	        Db::name('user')->where("id",'=',$res['id'])->update($data);
-	        return  'ok';
+	        return  2;
         }
 
 	    if(Session::get('tel')){
