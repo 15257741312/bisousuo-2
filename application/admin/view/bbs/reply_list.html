@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>评论列表</title>
+
+    <meta name="description" content="Dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!--Basic Styles-->
+    <link href="__STATIC__/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+    <!--Basic Scripts-->
+    <script src="__STATIC__/admin/js/jquery-2.0.3.min.js"></script>
+    <script src="__STATIC__/admin/js/bootstrap.min.js"></script>
+    
+    <!-- 左侧导航栏 -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/style.css"/>
+    <script type="text/javascript" src="__STATIC__/admin/js/main.js"></script>
+
+</head>
+<body>
+    <!-- 缓冲 -->
+    {include file="common/loading" /}
+    
+    <!-- 头部菜单栏 -->
+    {include file="common/top" /}
+
+    <!-- 左侧菜单栏 -->
+    {include file="common/sidebar" /}
+
+    <!-- 主体 -->
+    <p style="margin: 1% 14%;">当前位置：内容 >论坛管理 >
+        <a href="{:url('Bbs/boardList')}">币吧列表 </a>
+        >帖子列表 >评论列表</p>
+    <div class="content">
+	    <form class="form-inline">
+			<div class="form-group">
+			    <label for="sel_title">内容：</label>
+			    <input type="email" class="form-control" id="sel_title" value="{$selTitle}">
+			</div>
+			<div class="form-group" style="width: 17%;margin-left: 1%;">
+				<label for="is_delete">隐藏状态：</label>
+                <select class="form-control" id="is_delete" style="margin-left: 3%;width: 68%;">
+                    <option value="0" {if $isDelete == 0}selected="selected"{/if}>请选择</option>
+                    <option value="1" {if $isDelete == 1}selected="selected"{/if}>正常</option>
+                    <option value="2" {if $isDelete == 2}selected="selected"{/if}>隐藏</option>
+                </select>
+			</div>
+			<input type="button" class="btn btn-default" onclick="selCont()" value="查询">
+		</form>
+	    <table class="table table-striped">
+	    	<tr style="text-align: center;">
+	    		<td>id</td>
+	    		<td style="text-align: left;width: 50%;">回复内容</td>
+	    		<td>被回复者</td>
+                <td>回复者</td>
+	    		<td>回复时间</td>
+	    		<td>好评数</td>
+                <td>差评数</td>
+                <td>是否显示</td>
+	    		<td>操作</td>
+	    	</tr>
+	    	{volist name="replyList" id="vo"}
+			<tr style="text-align: center;">
+	    		<td>{$vo['id']}</td>
+	    		<td style="text-align: left;">
+                    {$vo['reply_content']}
+                </td>
+	    		<td>{$vo['reply_id']}</td>
+	    		<td>{$vo['reply_admin_id']}</td>
+	    		<td>{$vo['reply_create_time']}</td>
+	    		<td>{$vo['reply_good_count']}</td>
+                <td>{$vo['reply_bad_count']}</td>
+                <td>
+                    {if $vo.is_delete == 1}正常
+                    {elseif $vo.is_delete == 2}隐藏
+                    {/if}         
+                </td>
+	    		<td>
+                    {if $vo.is_delete == 1}
+                    <a href="javascript:void(0)" onclick="delCont('{$vo.id}',2)">隐藏</a>&nbsp
+                    {elseif $vo.is_delete == 2}
+                    <a href="javascript:void(0)" onclick="delCont('{$vo.id}',1)">显示</a>&nbsp
+                    {/if}         
+                </td>
+	    	</tr>
+			{/volist}
+	    </table>
+    </div>
+    <div style="float: right;margin: 1% 2% auto auto">
+	    {$replyList->render()}
+    </div>
+
+    <script type="text/javascript">
+        window.onload=function(){
+            $('.loading-container').hide();
+        }
+
+        function selCont(){
+        	var selTitle = $('#sel_title').val();
+        	var isDelete = $('#is_delete').val();
+
+          	window.location.href = "{:url('Bbs/replyList')}?selTitle="+selTitle+"&isDelete="+isDelete;
+        }
+
+        //是否隐藏
+        function delCont(id,type){
+            if(type == 1){
+                if(!confirm('确认显示吗？')){
+                    return false;
+                }
+            }else{
+                if(!confirm('确认隐藏吗？')){
+                    return false;
+                }
+            }
+            $.ajax({
+                url:"{:url('Bbs/delReplyAjax')}",
+                type:"POST",
+                dataType:"JSON",
+                async:false,
+                data:{
+                    id:id,
+                    type:type,
+                },
+                success:function(data){
+                    alert(data);
+                    window.location.reload();
+                },
+                error:function(data){
+                    alert('网络繁忙，请稍后再试');
+                },
+            });
+        }
+    </script>
+
+</body>
+</html>

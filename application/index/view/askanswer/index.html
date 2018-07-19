@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>问答专栏</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <link rel="stylesheet" href="__CSS__/Basics.css" />
+        <script type="text/javascript" src="__JS__/global.js"></script>
+        <script type="text/javascript" src="__JS__/common.js"></script>
+        <script src="__JS__/dist/easySlider.js"></script>
+        <link rel="stylesheet" type="text/css" href="__CSS__/index.css?v=2" />
+        <link rel="stylesheet" href="__CSS__/sow.css">
+        <link rel="stylesheet" href="__CSS__/pagelist.css">
+
+        <style>
+            .con{
+                height: 100%;
+                margin: 0 auto;
+            }
+            .con a{
+                color:  #F29602;
+            }
+            .nav-footer{
+                clear: both;
+            }
+            @media (min-width : 751px) {
+                .con{
+                    width: 1200px;
+                    padding: 20px 10px;
+                    font-size: 18px;
+                }
+                .con a:hover{
+                    text-decoration: underline !important;
+                }
+                .con ul.con_ul{
+
+                }
+                .con ul.con_ul li{
+                    margin-bottom: 15px;
+                }
+                .con ul.con_ul li > a{
+                    display: block;
+                    float: left;
+                    margin-bottom: 10px;
+                }
+                .con ul.con_ul li span{
+                    float: right;
+                    color: #999;
+                    font-size: 14px;
+                    width: 70px;
+                }
+                .con ul.con_ul li hr{
+                    clear: both;
+                    border : 1px solid #eeeeee;
+                }
+            }
+            @media (max-width : 751px) {
+                .con{
+                    width: 7rem;
+                    padding: 20px 10px;
+                    font-size: 0.4rem;
+                }
+                .con a:hover{
+                    text-decoration: underline !important;
+                }
+                .con ul.con_ul{
+
+                }
+                .con ul.con_ul li{
+                    margin-bottom: 0.4rem;
+                }
+                .con ul.con_ul li > a{
+                    display: block;
+                    float: left;
+                    margin-bottom: 0.3rem;
+                }
+                .con ul.con_ul li span{
+                    clear: left;
+                    float: right;
+                    color: #999;
+                    font-size: 0.3rem;
+                    width: 1.5rem;
+                }
+                .con ul.con_ul li hr{
+                    clear: both;
+                    border : 1px solid #eeeeee;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="head">
+            {include file="../application/index/view/common/head.html"}
+            {include file="common/askanswer"}
+        </div>
+        <div class="con">
+            <ul class="con_ul">
+                {volist name='res' id='vo' empty="没有更多数据了。。。"}
+                <li><a href="{:url('Askanswer/askDetail')}?id={$vo.id}{if $keywords}&keywords={$keywords}{/if}">{$vo.title}</a><span >{$vo.strtime}</span><span>{$vo.commend_num}回复　|　</span><hr></li>
+                {/volist}
+            </ul>
+            {$res->render()}
+        </div>
+        {include file='common/foot'}
+    </body>
+</html>

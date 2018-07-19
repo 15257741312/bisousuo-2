@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>编辑提问</title>
+
+    <meta name="description" content="Dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!--Basic Styles-->
+    <link href="__STATIC__/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link href="__STATIC__/admin/css/add_news.css" rel="stylesheet" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+    <!--Basic Scripts-->
+    <script src="__STATIC__/admin/js/jquery-2.0.3.min.js"></script>
+    <script src="__STATIC__/admin/js/bootstrap.min.js"></script>
+
+    <!-- 富文本框 -->
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/admin/js/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/admin/js/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/admin/js/zh-cn.js"></script>
+    
+    <!-- 左侧导航栏 -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/style.css"/>
+    <script type="text/javascript" src="__STATIC__/admin/js/main.js"></script>
+
+</head>
+<body>
+    <!-- 缓冲 -->
+    {include file="common/loading" /}
+
+    <!-- 头部菜单栏 -->
+    {include file="common/top" /}
+
+    <!-- 左侧菜单栏 -->
+    {include file="common/sidebar" /}
+
+    <!-- 主体 -->
+    <p class="address">当前位置：内容 >论坛管理 >提问管理 >编辑提问</p>
+    <div class="content">
+            <form style="border: 0px;">
+            <div style="width: 86%;height: auto;margin: 2% auto auto 7%;">
+
+                <!-- 横栏3 -->
+                <div style="height: 7rem;border-bottom: 1px dashed #d4dce6;padding-top: 1.3%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        <span style="color: red">*&nbsp</span>标题
+                    </div>
+                    <div style="width: 22%;height: auto;float: left;">
+                        <input type="text" name="title" class="form-control" id="title" value="{$oneData.title}" style="margin-left: 3%;">
+                    </div>
+                </div>
+
+                <!-- 横栏7 -->
+                <div style="height: 7rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        作者
+                    </div>
+                    <div style="width: 15%;height: auto;float: left">
+                        <input type="text" readonly="readonly" name="author" class="form-control" id="author" value="{$oneData.username}"  style="margin-left: 3%;">
+                    </div>
+                    <div style="width: 4%;float: left;line-height: 32px;margin-left: 3%;">
+                        评论量
+                    </div>
+                    <div style="width: 9%;height: auto;float: left">
+                        <input type="text" name="source" readonly="readonly" class="form-control" id="source" value="{$oneData.commend_num}" style="margin-left: 3%;">
+                    </div>
+                </div>
+
+                <!-- 横栏10 -->
+                <div style="height: 64rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        内容
+                    </div>
+                    <script id="editor" type="text/plain" style="width:1024px;height:500px;margin-left: 6%;"></script>
+                    <input type="hidden" value='{$oneData.content}' id="hid_edit" />
+                </div>
+
+                <!-- 横栏12 -->
+                <div style="height: 6rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div>
+                        <button type="button" class="btn btn-primary" id="preview" style="float: left;margin-left: 6%;width: 6%;">预览</button>
+                        <button type="button" class="btn btn-primary" id="submit" style="float: left;margin-left: 1%;width: 6%;">提交</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+    </div>
+<script type="text/javascript">
+
+        window.onload=function(){
+            $('.loading-container').hide();
+
+            if($('#cont_type').val() == '2'){
+                $('.transaction_div').show();
+            }
+
+        }
+
+        //实例化富文本编辑器
+        var ue = UE.getEditor('editor',{
+            //设置编辑器高度
+            initialFrameHeight:500,
+            //设置不自动调整高度
+            scaleEnabled:true
+        });
+        //编辑器初始化完成再赋值
+        ue.ready(function() {  
+            ue.setContent($('#hid_edit').val());
+        }); 
+        
+
+        //预览
+        $('#preview').click(function(){
+            var id = '{$oneData.id}';
+            if($('#title').val() == ''){
+                alert('请填写标题');
+            }else{
+                var editor = ue.getContent();
+                $.ajax({
+                    url:"{:url('Bbs/previewAskEdit')}",
+                    type:"POST",
+                    dataType:"JSON",
+                    async:false,
+                    data:{
+                        id:id,
+                        title:$('#title').val(),
+                        editor:editor,
+                    },
+                    success:function(data){
+                        console.log(data);
+                        $('#submit').after("<a href='{:url('Bbs/previewAsk')}?id="+data.id+"' id='pr' target='_blank'></a>");
+                        document.getElementById("pr").click();
+                    },
+                    error:function(data){
+                        alert('网络繁忙，请稍后再试！【3001】');
+                    },
+                });
+
+            }
+            
+        });
+
+        //提交
+        $('#submit').click(function(){
+            
+            if($('#title').val() == ''){
+                alert('请填写标题');
+            }else{
+                var id = '{$Think.get.id}';
+                var editor = ue.getContent();
+                $.ajax({
+                    url:"{:url('Bbs/previewAskEdit')}",
+                    type:"POST",
+                    dataType:"JSON",
+                    async:false,
+                    data:{
+                        id:id,
+                        title:$('#title').val(),
+                        editor:editor,
+                    },
+                    success:function(data){
+                        window.location.href=document.referrer;
+                    },
+                    error:function(data){
+                        alert('网络繁忙，请稍后再试！【3002】');
+                    },
+                });
+            }
+        })
+
+        //币种关联交易所input框
+        $('#cont_type').change(function(){
+            if($('#cont_type').val() == '2'){
+                $('.transaction_div').show();
+            }else{
+                $('.transaction_div').hide();
+            }
+        })
+    </script>
+</body>
+</html>

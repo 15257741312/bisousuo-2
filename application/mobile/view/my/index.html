@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,width=device-width,initial-scale=1.0,user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>我的</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/bi_style.css"/>
+	</head>
+	<body class="MyBody">
+		<div id="wrap" class="flex-wrap flex-vertical">
+			<div id="main" class="flex-con">
+	  		<div class="myTop">
+	        <div class="myShezhi"><img src="__STATIC__/mobile/image/shezhi.png" alt="设置"></div>
+	        <dl class="myTouxaing" id="userON">
+	          <dt><img src="__STATIC__/mobile/image/myTou.png" alt="头像"></dt>
+	          <dd>
+	            <h3>Jane Roe</h3>
+	            <p>资料完善度10%></p>
+	          </dd>
+	        </dl>
+					<dl class="myTouxaing" id="userDOWN">
+	          <dt class="huanying">欢迎来到币搜索</dt>
+	          <dd>
+	            <a href="{:url('Login/login')}"><div class="denglu">登录</div></a>
+	            <a href="{:url('Login/registe')}"><div class="zhuce">注册</div></a>
+	          </dd>
+	        </dl>
+	        <div class="myTopBot">
+	          <dl>
+	            <dd>积分</dd>
+	            <dd>1000</dd>
+	          </dl>
+	          <dl>
+	            <dd>等级</dd>
+	            <dd>9</dd>
+	          </dl>
+	          <dl>
+	            <dd>邀请好友</dd>
+	            <dt><img src="__STATIC__/mobile/image/fenxiang2.png" alt="邀请好友"></dt>
+	          </dl>
+	        </div>
+	  		</div>
+	      <div class="myBot">
+	        <ul>
+	          <a href="#" class="myAborder"><li><img src="__STATIC__/mobile/image/mytiezi.png" alt="我的帖子">我的帖子</li></a>
+	          <a href="#"><li><img src="__STATIC__/mobile/image/myhuifu.png" alt="我的回复">我的回复</li></a>
+	        </ul>
+	        <ul>
+	          <a href="#" class="myAborder"><li><img src="__STATIC__/mobile/image/mytiwen.png" alt="我的提问">我的提问</li></a>
+	          <a href="#"><li><img src="__STATIC__/mobile/image/myhuida.png" alt="我的回答">我的回答</li></a>
+	        </ul>
+	        <ul>
+	          <a href="#"><li><img src="__STATIC__/mobile/image/mytucao.png" alt="我的吐槽">我的吐槽 </li></a>
+	        </ul>
+	      </div>
+			</div>
+			{include file="common/footer"}
+		</div>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script>
+		$(function(){
+			if ($('#userON dd h3').text() == 'Jane Roe') {
+				$('#userON').hide();
+				$('#userDOWN').show();
+			}else{
+				$('#userON').show();
+				$('#userDOWN').hide();
+			}
+		});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>编辑贴吧</title>
+
+    <meta name="description" content="Dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!--Basic Styles-->
+    <link href="__STATIC__/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link href="__STATIC__/admin/css/add_news.css" rel="stylesheet" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+    <!--Basic Scripts-->
+    <script src="__STATIC__/admin/js/jquery-2.0.3.min.js"></script>
+    <script src="__STATIC__/admin/js/bootstrap.min.js"></script>
+    
+    <!-- 左侧导航栏 -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/style.css"/>
+    <script type="text/javascript" src="__STATIC__/admin/js/main.js"></script>
+
+    
+</head>
+<body>
+    <!-- 缓冲 -->
+    {include file="common/loading" /}
+
+    <!-- 头部菜单栏 -->
+    {include file="common/top" /}
+
+    <!-- 左侧菜单栏 -->
+    {include file="common/sidebar" /}
+
+    <!-- 主体 -->
+    <p class="address">当前位置：内容 >论坛管理 >编辑贴吧</p>
+    <div class="content">
+        <form style="border: 0px;">
+            <div style="width: 86%;height: auto;margin: 2% auto auto 7%;">
+
+                <!-- 横栏1 -->
+                <div style="height: 7rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        <span style="color: red">*&nbsp</span>标题
+                    </div>
+                    <div style="width: 22%;height: auto;float: left;">
+                        <input type="text" name="title" class="form-control" id="title" value="{$boardInfo['smbo_title']}" style="margin-left: 3%;">
+                    </div>
+                </div>
+
+                <!-- 横栏2 -->
+                <div id="logo" style="height: 13rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        <span style="color: red">*&nbsp</span>logo
+                    </div>
+                    <div style="width: 30%;height: auto;float: left;position: relative;">
+                        <img style="width: 100px;height: 100px;margin-left: 4%;float: left;" id="boardLogo" src="{$boardInfo['smbo_logo']}">
+                        <input type="hidden" id="logo_url" value="{$boardInfo['smbo_logo']}">
+                        <input type="file" id="myfile" style="display: none;" name="imageFile" onchange="uploadImg();" />
+                        <button type="button" class="btn btn-info" onclick="$('#myfile').click()" style="float: left;margin-left: 1%;position: absolute;bottom: 0px;">图片上传</button>
+                        <button type="button" class="btn btn-info" onclick="clearImg()" style="float: left;margin-left: 1%;position: absolute;bottom: 0px;right: 32%;">图片删除</button>
+                    </div>
+                </div>
+
+                <!-- 横栏3 -->
+                <div style="height: 11rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        简介
+                    </div>
+                    <div style="width: 75%;height: auto;float: left">
+                        <textarea type="text" name="description" class="form-control" id="description" rows="3" style="margin-left: 1%;">{$boardInfo['smbo_description']}</textarea>
+                    </div>
+                </div>
+
+                <!-- 横栏4 -->
+                <div style="height: 7rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        创建者
+                    </div>
+                    <div style="width: 15%;height: auto;float: left">
+                        <input type="text" name="owner" class="form-control" id="owner" value="{$boardInfo['smbo_owner']}" disabled="disabled" style="margin-left: 3%;">
+                    </div>
+                </div>
+
+                <!-- 横栏5 -->
+                <div style="height: 8rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        管理员
+                    </div>
+                    <div style="width: 75%;height: auto;float: left">
+                        <input type="text" name="admin" class="form-control" id="admin" value="{$boardInfo['smbo_admin']}" style="margin-left: 1%;">
+                        <span class="remarks" style="margin: 0;margin: 1% auto auto 1%;">
+                            用","分开
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 横栏7 -->
+                <div style="height: 6rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;padding-left: 5%;">
+                    <div>
+                        <button type="button" class="btn btn-primary" id="submit" style="float: left;margin-left: 1%;width: 6%;">提交</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+<script type="text/javascript">
+        
+        window.onload=function(){
+            $('.loading-container').hide();
+        }
+
+        //提交
+        $('#submit').click(function(){
+            if($('#title').val() == ''){
+                alert('请填写标题');
+                return false;
+            }else{
+                var id = '{$id}';
+                $.ajax({
+                    url:"{:url('Bbs/editBoardAjax')}",
+                    type:"POST",
+                    dataType:"JSON",
+                    async:false,
+                    data:{
+                        id:id,
+                        title:$('#title').val(),
+                        desc:$('#description').val(),
+                        admin:$('#admin').val(),
+                        logo:$('#logo_url').val(),
+                    },
+                    success:function(data){
+                        alert(data);
+                        window.location.href=document.referrer;
+                    },
+                    error:function(data){
+                        alert('网络繁忙，请稍后再试！');
+                    },
+                });
+            }
+        })
+
+        //图片上传
+        function uploadImg(){
+            // FormData对象，来发送二进制文件。
+            var formdata = new FormData();
+            //将文件追加到formdata对象中
+            formdata.append("myfile",document.getElementById('myfile').files[0]);
+            $.ajax({
+                url:"{:url('Index/logoUploadAjax')}",
+                type:"POST",
+                data:formdata,
+                 /** 
+                 * 必须false才会避开jQuery对 formdata 的默认处理 
+                 * XMLHttpRequest会对 formdata 进行正确的处理 
+                 */ 
+                 processData: false, 
+                 // 告诉jQuery不要去设置Content-Type请求头 
+                 contentType: false, 
+                 dataType: "json", 
+                 success: function(data){
+                    $('#boardLogo').attr("src","/demo/public/upload/"+data);
+                    $('#logo_url').val("/demo/public/upload/"+data);
+                }, 
+                error: function(jqXHR){
+                    alert(jqXHR); 
+                },
+            })
+        }
+        
+        //清除图片
+        function clearImg(){
+            $('#boardLogo').attr("src","");
+            $('#logo_url').val("");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>敏感词列表</title>
+
+    <meta name="description" content="Dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!--Basic Styles-->
+    <link href="__STATIC__/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+    <!--Basic Scripts-->
+    <script src="__STATIC__/admin/js/jquery-2.0.3.min.js"></script>
+    <script src="__STATIC__/admin/js/bootstrap.min.js"></script>
+    
+    <!-- 左侧导航栏 -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/style.css"/>
+    <script type="text/javascript" src="__STATIC__/admin/js/main.js"></script>
+</head>
+<body>
+    <!-- 缓冲 -->
+    {include file="common/loading" /}
+    
+    <!-- 头部菜单栏 -->
+    {include file="common/top" /}
+
+    <!-- 左侧菜单栏 -->
+    {include file="common/sidebar" /}
+
+    <!-- 主体 -->
+    <p style="margin: 1% 14%;">当前位置：内容 >内容管理 >敏感词列表</a>
+    </p>
+    <div class="content">
+	    <table class="table table-striped">
+	    	<tr>
+	    		
+	    	</tr>
+	    	{volist name="broad_cast" id="vo"}
+	    	<tr>
+	    		<td><a href="javascript:void(0)" onclick="delImg('{$vo.id}');">删除</a></td>
+	    	</tr>
+	    	{/volist}
+	    </table>
+    </div>
+
+    <script type="text/javascript">
+        window.onload=function(){
+            $('.loading-container').hide();
+
+        }
+        
+        //修改轮播图顺序
+        function updOrder(id,order){
+        	$.ajax({
+                url:"{:url('Index/updImgOrderAjax')}",
+                type:"POST",
+                dataType:"JSON",
+                async:false,
+                data:{
+                    id:id,
+                    order:order,
+                },
+                success:function(data){
+                    alert('修改成功');
+                	window.location.reload();
+                },
+                error:function(data){
+                    alert('网络繁忙，请稍后再试！【1001】');
+                },
+            });
+        }
+
+    </script>
+
+</body>
+</html>

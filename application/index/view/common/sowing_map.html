@@ -1,0 +1,40 @@
+<div class="address">
+	<div id="slider">
+		<ul class="slides clearfix">
+			<li><img class="responsive" src="__IMG__/sowing_img.jpg"></li>
+			<li><img class="responsive" src="__IMG__/sowing_img.jpg"></li>
+			<li><img class="responsive" src="__IMG__/sowing_img.jpg"></li>
+			<li><img class="responsive" src="__IMG__/sowing_img.jpg"></li>
+			<li><img class="responsive" src="__IMG__/sowing_img.jpg"></li>
+			<li><img class="responsive" src="__IMG__/sowing_img.jpg"></li>
+		</ul>
+		<ul class="controls">
+			<li><img src="__JS__/dist/prev.png" alt="previous"></li>
+			<li><img src="__JS__/dist/next.png" alt="next"></li>
+		</ul>
+		<ul class="pagination">
+			<li class="active"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<div class="address_r">
+		
+	</div>
+</div>
+<script type="text/javascript">
+	$(function() {
+		$("#slider").easySlider( {
+			slideSpeed: 500,
+			paginationSpacing: "15px",
+			paginationDiameter: "12px",
+			paginationPositionFromBottom: "20px",
+			slidesClass: ".slides",
+			controlsClass: ".controls",
+			paginationClass: ".pagination"					
+		});
+	});
+</script>

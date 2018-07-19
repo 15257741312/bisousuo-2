@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,width=device-width,initial-scale=1.0,user-scalable=no"/>
+    	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>注册</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/bi_style.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/bi_style.css"/>
+		<script type="text/javascript" src="__STATIC__/js/jquery-1.9.1.min.js"></script>
+	</head>
+	<body>
+		<div id="wrap" class="flex-wrap flex-vertical">
+			<!--top-->
+			<header id="aui-header" class="baike2Top" style="position:fixed;top:0;background-color:#fff;z-index: 999;">
+				<a href="javascript:history.go(-1)"><img src="__STATIC__/mobile/image/baike_04_03.jpg"/></a>
+	      <span>注册</span>
+			</header>
+			<!--内容-->
+			<div id="main" class="flex-con" style="margin-top: 70px;">
+			    <section class="loginYLogo"><img src="__STATIC__/mobile/image/logo.jpg" alt="Logo"></section>
+			    <div class="loginYinput">
+			        <label for="tel">+86</label><input type="tel" name="tel" id="tel" required placeholder="请输入手机号码"/>
+			    </div>
+			    <p class="yanzheng"><span class="shoujihao"></span></p>
+			    <div class="loginYinput">
+			        <label for="yan">验证码</label><input type="text" name="code" required placeholder="请输入验证码" id="yan" /><span class="huoquuanzhengma">获取验证码</span>
+			    </div>
+			    <p class="yanzheng"><span class="yanzhengma"></span></p>
+			    <div class="loginYinput">
+			        <label for="pwd">密码</label><input type="password" name="pass" class="pass1" required placeholder="请输入6-19位密码" id="pwd" />
+			    </div>
+			    <p class="yanzheng"><span class="mima1"></span></p>
+			    <div class="loginYinput">
+			        <label for="pwdt">密码</label><input type="password" required class="pass2" placeholder="请再次输入6-19位密码" id="pwdt" />
+			    </div>
+			    <p class="yanzheng"><span class="mima2"></span></p>
+			    <div class="loginYD">
+			        <button class="reg">注册</button>
+			    </div>
+			    <p class="registerXy">已阅读并同意及遵守<span>《点对点用户服务协议》</span></p>
+			</div>
+		</div>
+	</body>
+  <script type="text/javascript">
+  	$(function(){
+  		$(".huoquuanzhengma").click(function(){
+  			var tel=$("#tel").val();
+  			if(tel=="") {
+  				$('.shoujihao').text("手机号未填写");
+  				return false;
+  			}
+  			if(tel.length!==11 || !(/^1[34578]\d{9}$/.test(tel))){
+	  			$('.shoujihao').text("手机号填写不正确");
+	  			return false;
+	  		}
+  			if(tel.length==11){
+	  			$('.shoujihao').text("");
+	  			return true;
+	  		}
+  			$(this).css("disabled");
+  			var code=$("input[name='code']").val();
+	  		$.ajax({
+	  			url : "{:url('Login/sendSms')}",
+	  			data : {
+	  				tel : tel,
+	  				type : 'registe',		//验证是注册提交还是忘记密码提交
+	  			},
+	  			type : 'post',
+	  			async : false,	
+	  			success : function(res){
+	  				if(res=="no"){
+	  					$('.shoujihao').text("该账号已被注册");
+	  					return false;
+	  				}
+	  			},
+	  			error : function(msg){
+	  				$('.shoujihao').text("网络连接失败");
+	  			}
+	  		})
+	  	});
+
+	  	$(".reg").click(function(){
+	  		if($("#tel").val()!==/^1[34578]\d{9}$/){
+	  			$('.shoujihao').text("手机号填写不正确");
+	  			return false;
+	  		}
+	  		if($("input[name='code']").val().length!=6){
+	  			$('.yanzhengma').text("验证码格式不正确");
+	  			return false;
+	  		}
+	  		var pass1=$(".pass1").val();
+	  		var pass2=$(".pass2").val();
+	  		if(pass1==""){
+	  			$('.mima1').text("密码不能为空");
+	  			return false;
+	  		}
+	  		if(pass1!==""){
+	  			$('.mima1').text("");
+	  			return true;
+	  		}
+	  		if(pass1!=pass2){
+	  			$('.mima1').text("两次密码不一致");
+	  			return false;
+	  		}
+	  		if(pass1==pass2){
+	  			$('.mima1').text("");
+	  			return true;
+	  		}
+	  		$.ajax({
+	  			url : '{:url("Login/registe")}',
+	  			type : 'post',
+	  			data : {
+	  				tel : $("input[name='tel']").val(),
+	  				code : $("input[name='code']").val(),
+	  				pass : $("input[name='pass']").val(),
+	  			},
+	  			async : false,
+	  			success : function(res){
+	  				if(res==1){
+	  					$('.shoujihao').text("该账号已被注册");
+	  				}else if(res==2){
+	  					$('.yanzhengma').text("验证码不正确");
+	  				}else if(res==3){
+	  					$('.shoujihao').text("网络错误,请重新注册");
+	  				}else if(res==4){
+	  					//注册成功
+	  					location.href="{:url('Login/login')}";
+	  				}
+	  			},
+	  			error : function(msg){
+	  				$('.shoujihao').text("网络连接失败");
+	  			}
+	  		})
+	  	})
+
+  	})
+  	
+  </script>
+
+</html>

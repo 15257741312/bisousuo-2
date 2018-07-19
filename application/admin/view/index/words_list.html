@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>词条列表</title>
+
+    <meta name="description" content="Dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!--Basic Styles-->
+    <link href="__STATIC__/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+    <!--Basic Scripts-->
+    <script src="__STATIC__/admin/js/jquery-2.0.3.min.js"></script>
+    <script src="__STATIC__/admin/js/bootstrap.min.js"></script>
+    
+    <!-- 左侧导航栏 -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/style.css"/>
+    <script type="text/javascript" src="__STATIC__/admin/js/main.js"></script>
+</head>
+<body>
+    <!-- 缓冲 -->
+    {include file="common/loading" /}
+    
+    <!-- 头部菜单栏 -->
+    {include file="common/top" /}
+
+    <!-- 左侧菜单栏 -->
+    {include file="common/sidebar" /}
+
+    <!-- 主体 -->
+    <p style="margin: 1% 14%;">当前位置：内容 >内容管理 >
+    	<a href="{:url('Index/wordsList')}">词条</a>
+    </p>
+    <div class="content">
+	    <button type="button" onclick="addContent()" class="btn btn-info addNews">添加词条</button>
+	    <form class="form-inline">
+			<div class="form-group">
+			    <label for="sel_title">标题：</label>
+			    <input type="email" class="form-control" id="sel_title" value="{$selTitle}">
+			</div>
+			<div class="form-group" style="margin-left: 1%;">
+				<label for="sel_author">发布者：</label>
+				<input type="email" class="form-control" id="sel_author" value="{$selAuthor}">
+			</div>
+			<div class="form-group" style="width: 17%;margin-left: 1%;">
+				<label for="confirm_type">审核状态：</label>
+				<select class="form-control" id="confirm_type" style="margin-left: 3%;width: 60%;">
+                    <option value="0" {if $confirmType == 0}selected="selected"{/if}>请选择</option>
+                    <option value="1" {if $confirmType == 1}selected="selected"{/if}>未审核</option>
+                    <option value="2" {if $confirmType == 2}selected="selected"{/if}>审核通过</option>
+                    <option value="3" {if $confirmType == 3}selected="selected"{/if}>审核未通过</option>
+                </select>
+			</div>
+			<div class="form-group" style="width: 17%;">
+				<label for="cont_type">内容类别：</label>
+				<select class="form-control" id="cont_type" style="margin-left: 2%;width: 60%;">
+                    <option value="0" {if $contType == 0}selected="selected"{/if}>请选择</option>
+                    <option value="1" {if $contType == 1}selected="selected"{/if}>普通</option>
+                    <option value="2" {if $contType == 2}selected="selected"{/if}>项目</option>
+                    <option value="3" {if $contType == 3}selected="selected"{/if}>人物</option>
+                    <option value="4" {if $contType == 4}selected="selected"{/if}>术语</option>
+                    <option value="5" {if $contType == 5}selected="selected"{/if}>矿机</option>
+                    <option value="6" {if $contType == 6}selected="selected"{/if}>钱包</option>
+                    <option value="7" {if $contType == 7}selected="selected"{/if}>交易所</option>
+                </select>
+			</div>
+			<div class="form-group" style="width: 17%;">
+				<label for="logo_type">是否有logo：</label>
+				<select class="form-control" id="logo_type" style="margin-left: 2%;width: 60%;">
+                    <option value="0" {if $logoType == 0}selected="selected"{/if}>请选择</option>
+                    <option value="1" {if $logoType == 1}selected="selected"{/if}>未上传logo</option>
+                </select>
+			</div>
+			<input type="button" class="btn btn-default" onclick="selCont()" value="查询">
+		</form>
+	    <table class="table table-striped">
+	    	<tr style="text-align: center;">
+	    		<td style="">id</td>
+	    		<td style="text-align: left;">标题</td>
+	    		<td>置顶</td>
+	    		<td>栏目</td>
+	    		<td>类型</td>
+	    		<td>发布者</td>
+	    		<td>点击</td>
+	    		<td>发布时间</td>
+	    		<td>状态</td>
+	    		<td>操作</td>
+	    	</tr>
+	    	{volist name="allarticle" id="vo"}
+			<tr style="text-align: center;">
+	    		<td>{$vo.article_id}</td>
+	    		<td style="text-align: left;">{$vo.article_title}</td>
+	    		<td>置顶</td>
+	    		<td>{$vo.column_name}</td>
+	    		<td>
+	    		{if $vo.cont_type == 1}普通
+    			{elseif $vo.cont_type == 2}项目
+    			{elseif $vo.cont_type == 3}人物
+    			{elseif $vo.cont_type == 4}术语
+    			{elseif $vo.cont_type == 5}矿机
+    			{elseif $vo.cont_type == 6}钱包
+    			{elseif $vo.cont_type == 7}交易所
+    			{/if}
+	    		</td>
+	    		<td>{$vo.article_author}</td>
+	    		<td>7788</td>
+	    		<td>{$vo.article_time|date='Y-m-d H:i:s',###}</td>
+	    		<td>
+	    			{if $vo.examine_type == 1}
+	    			<a href="{:url('Index/confirmCont')}?id={$vo.article_id}">未审核</a>
+	    			{elseif $vo.examine_type == 2}审核通过
+	    			{else /}不通过
+	    			{/if}
+	    		</td>
+	    		<td>
+	    			<a href="{:url('Index/editContent')}?id={$vo.article_id}">编辑</a>&nbsp
+	    			<a href="javascript:void(0)" onclick="delCont('{$vo.article_id}');">删除</a>
+	    		</td>
+	    	</tr>
+			{/volist}
+	    </table>
+    </div>
+    <div style="float: right;margin: 1% 2% auto auto">
+	    {$allarticle->render()}
+    </div>
+
+    <script type="text/javascript">
+        window.onload=function(){
+            $('.loading-container').hide();
+
+        }
+
+        function addContent(){
+        	window.location.href="{:url('Index/addContent')}";
+        }
+
+        function selCont(){
+        	var selTitle = $('#sel_title').val();
+        	var selAuthor = $('#sel_author').val();
+        	var confirmType = $('#confirm_type').val();
+        	var contType = $('#cont_type').val();
+        	var logoType = $('#logo_type').val();
+          	window.location.href = "{:url('Index/wordsList')}?selTitle="+selTitle+"&selAuthor="+selAuthor+"&confirmType="+confirmType+"&contType="+contType+"&logoType="+logoType;
+        }
+
+        function delCont(id){
+        	if(confirm('确认删除吗？')){
+        		$.ajax({
+	                url:"{:url('Index/delArtAjax')}",
+	                type:"POST",
+	                dataType:"JSON",
+	                async:false,
+	                data:{
+	                    id:id,
+	                },
+	                success:function(data){
+	                    alert(data);
+                    	window.location.reload();
+	                },
+	                error:function(data){
+	                    alert('网络繁忙，请稍后再试！');
+	                },
+	            });
+        	}
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<div class="top">
+    <div class="main">
+        {if $Think.session.tel}
+        <a id="setting" href="{:url('Login/loginout')}" class="fr" style="font-weight: bold;" >退出</a>
+        {/if}
+        <div class="top-menu" style="display:none;">
+            <a href="#" target="_blank"> 搜索设置 </a>
+            <a href="#" target="_blank"> 高级搜索 </a>
+            <a href="#" target="_blank"> 关闭预测 </a>
+            <a href="#" target="_blank"> 搜索历史 </a>
+        </div>
+        {if $Think.session.tel}
+        <a id="login" href="{:url('Info/index')}" class="fr" style="font-weight: bold;" >个人中心</a>
+        {else/}
+        <a id="login" href="javascript:;" class="fr" style="font-weight: bold;" onclick="common.poplogin();">登录</a>
+        {/if}
+        <div class="po">
+            <a href="{:url('Index/index')}">首页</a>
+            <a href="{:url('Baike/bklist')}">百科</a>
+            <a href="{:url('News/newsList')}">资讯</a>
+            <a href="{:url('Guba/guba')}">股吧</a>
+            <a href="{:url('Askanswer/index')}">问答</a>
+            <a href="{:url('Spit/spitList')}">吐槽 </a>
+            <a href="#">教程</a>
+        </div>
+    </div>
+</div>

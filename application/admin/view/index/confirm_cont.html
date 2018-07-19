@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>审核</title>
+	<!-- 富文本框 -->
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/admin/js/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/admin/js/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/admin/js/zh-cn.js"></script>
+    <script src="__STATIC__/admin/js/jquery-2.0.3.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    //实例化富文本编辑器
+    var ue = UE.getEditor('editor',{
+        //设置编辑器高度
+        initialFrameHeight:500,
+        //设置不自动调整高度
+        scaleEnabled:true
+    });
+    //编辑器初始化完成再赋值
+    ue.ready(function() {  
+        ue.setContent($('#hid_edit').val());
+    }); 
+    UE.getEditor('content').getContentTxt();
+</script>
+<p>文章栏目：{$conInfo['column_id']}</p>
+<p>文章标题：{$conInfo['article_title']}</p>
+<p>文章短标题：{$conInfo['title_min']}</p>
+<p>文章标签：{$conInfo['tag']}</p>
+<p>文章摘要：{$conInfo['article_description']}</p>
+<p>文章作者：{$conInfo['article_author']}</p>
+<p>文章来源：{$conInfo['source']}</p>
+<p>文章来源地址：{$conInfo['source_addr']}</p>
+<p>文章类型：{$conInfo['cont_type']}</p>
+<p>浏览权限：<input type="checkbox" {if condition="$conInfo['ordi_vip'] eq 1"} checked="checked" {/if} id="ordi_vip"> 普通会员<input type="checkbox" id="seni_vip" {if condition="$conInfo['seni_vip'] eq 1"} checked="checked" {/if}> 高级会员</p>
+<p>文章内容：<script id="editor" type="text/plain" style="width:1024px;height:500px;margin-left: 6%;"></script></p>
+<input type="hidden" value='{$conInfo.article_content}' id="hid_edit">
+
+<input type="button" value="审核通过" onclick="confirmCont(2)">
+<input type="button" value="审核不通过" onclick="confirmCont(3)">
+</p>
+</body>
+<script type="text/javascript">
+    var id = {$id};
+    function confirmCont(type){
+        if(type == 2){
+            if(confirm('确认通过吗？')){
+                ajax(type);
+            }
+        }else if(type == 3){
+            if(confirm('确认不通过吗？')){
+                ajax(type);
+            }
+        }
+        
+    }
+
+    function ajax(type){
+        $.ajax({
+            url:"{:url('Index/confirmContAjax')}",
+            type:"POST",
+            dataType:"JSON",
+            async:false,
+            data:{
+                id:id,
+                type:type,
+            },
+            success:function(data){
+                alert(data);
+                window.location.href = "{:url('Index/wordsList')}";
+            },
+            error:function(data){
+                alert('网络繁忙，请稍后再试！');
+            },
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>首页</title>
+	<link rel="stylesheet" href="__CSS__/Basics.css" />
+	<script type="text/javascript" src="__JS__/global.js"></script>
+	<script type="text/javascript" src="__JS__/common.js"></script>
+	<script src="__JS__/dist/easySlider.js"></script>
+	<link rel="stylesheet" type="text/css" href="__CSS__/index.css?v=2" />
+	<link rel="stylesheet" href="__CSS__/sow.css">
+</head>
+<body>
+<div class="head">
+	{include file="../application/index/view/common/head.html"}
+	<div class="main">
+        <div class="search-box">
+            <a href="index.html" class="logo fl"><img src="__IMG__/logo.png" alt="" /></a>
+            <div class="search">
+                <form action="{:url('Index/index')}" method="post">
+                    <input type="submit" style="cursor: pointer" value="立即搜索" class="btn" />
+                    <div class="po">
+                        <input type="text" class="txt" value="{$keywords}" name="keywords"/>
+                        <div class="select_down">
+                            <ul class="select_ul">
+                                <li class="select_li">吐槽吐槽吐槽吐槽啊啊啊</li>
+                                <li class="select_li">吐槽吐槽啊啊啊</li>
+                                <li class="select_li">吐槽吐槽</li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <input type="button" value="全站搜索" class="btn" /> -->
+        </div>
+    </div>
+</div>
+<!-- 广告 -->
+{include file="../application/index/view/common/sowing_map.html"}
+<div class="wrapper">
+	<div>
+		<div class="main">
+			<div class="menu-gurd" style="display: none;">
+				<span class="mine-text">我的关注</span><span class="menu-item current">推荐</span><span class="menu-item">导航</span>
+			</div>
+			<div class="news-wrapper">
+
+				<!-- <div class="news-flash-tips"">
+					<div class="left-line"></div>
+					<div class="tips-content">
+						<span>以下信息根据您的兴趣推荐</span>
+					</div>
+					<div class="rigth-line"></div>
+				</div> -->
+				<div class="water-container">
+					<!-- 贴吧 -->
+					{volist name="ba" id="vo" }
+					<div class="news-item">
+						<div class="img_cnt">
+							<img src="{$vo.smbo_logo}" class="jl" style="width: 15%;height: auto;" />
+						</div>
+						<h2 class="dw" style="left: 140px;">{$vo.smbo_title}</h2>
+						<span class="dw2" style="left: 140px;">{$vo.smbo_description}</span>
+					</div>
+			        {/volist}
+
+			        <!-- 百科 -->
+			        {if $baike != null}
+					<div class="news-item">
+						<h2><a href="{:url('Baike/baike')}?id={$baike.article_id}">{$baike.article_title}百科</a></h2>
+						<span>{$baike.article_content|msubstr=0,212,'utf-8',true}</span>
+					</div>
+					{/if}
+
+					<!-- 新闻 -->
+					<!-- 多图新闻 -->
+					<!-- <div class="news-item">
+						<h2>俄罗斯能办世界杯才不仅仅因为他们是战斗民族</h2>
+						<div class="img_cnt">
+							<div class="img_cntdiv"><img src="__IMG__/tu1.png" /></div>
+							<div class="img_cntdiv"><img src="__IMG__/tu2.png" /></div>
+							<div class="img_cntdiv"><img src="__IMG__/tu3.png" /></div>
+						</div>
+						<span>温州点对点网络科技有限公司 &nbsp; &nbsp; &nbsp;2018-05-29 &nbsp;18:56</span>
+					</div> -->
+					<!-- 无图新闻 -->
+					<!-- <div class="news-item">
+						<h2>冬虫夏草被踢出保健品圈子 神话要"凉凉"?</h2>
+						<span>温州点对点网络科技有限公司 &nbsp; &nbsp; &nbsp;2018-05-29 &nbsp;18:56</span>
+					</div> -->
+					{volist name='news' id='vo' empty="没有更多数据了。。" }
+					<div class="news-item">
+						<div class="img_cnt">
+							<img src="{$vo.thumbnail}" class="jl" />
+						</div>
+						<h2 class="dw"><a href="{$vo.url}" target="_blank">{$vo.title}</a></h2>
+						<span class="dw2">{$vo.summary}</span>
+						<span class="dw2" style="top: 155px;">时间：{$vo.time_num|date="Y-m-d",###}&nbsp;&nbsp;来源：{$vo.resource}</span>
+					</div>
+					{/volist}
+			        <input type="hidden" id="page_input" value="1">
+			        <div id="loadmore" style="text-align: center;"><h4>→加载更多←</h4></div>
+				</div>
+				<!-- 右侧新闻 -->
+				<div class="news-rank-wrapper">
+					{volist name='right_news' id='vo' }
+					<div class="news-text">
+						<i class="yuan act"></i>
+						<span>{$vo.time_num|date="Y-m-d",###}</span>
+						<span><a href="{$vo.url}" target="_blank">{$vo.title}</a></span>
+						<span>{$vo.summary}</span>
+					</div>
+					{/volist}
+				</div>
+				<div class="news-rank-address" style="width: 22rem;height: 200px;background-color: #000;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+{include file="../application/index/view/common/foot.html"}
+</body>
+<script type="text/javascript">
+	$(function () {
+        var loadmore=$("#loadmore");
+        loadmore.click(function () {
+            var p=$("#page_input").val();
+            var keywords=$(".search").val();
+            $.ajax({
+                url : '{:url("Index/ajax_content")}',
+                type : 'post',
+                data : {
+                    p : p,
+                    keywords : keywords,
+                },
+                async : false,
+                success : function (data) {
+                    p=parseInt(p)+1;
+                    $("#page_input").val(p);
+                    $(".news-item:last").after(data);
+                    if(data==""){
+                        loadmore.html('没有更多数据了。。');
+                    }
+                },
+                error : function () {
+                    alert("网络连接失败");
+                }
+            })
+        })
+    })
+</script>
+</html>

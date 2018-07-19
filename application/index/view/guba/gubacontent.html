@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>个人中心详情</title>
+		<script type="text/javascript" src="__JS__/global.js"></script>
+        <script type="text/javascript" src="__JS__/common.js"></script>
+        <link rel="stylesheet" href="__CSS__/Basics.css" />
+		<link rel="stylesheet" type="text/css" href="__CSS__/grzhuye_show.css" />
+	</head>
+
+	<body>
+	   	{include file='common/head'}
+		<div class="wrap2 ">
+		    <div class="content1 clearfix ">
+		    	<div class="card_top ">
+		    		<a href=" "><img src="__IMG__/gblogo.jpg "  class="gblogo "/></a>
+		    		<div><span>怎么发股吧</span><div class="focus_btn "><a href="# ">已关注</a>&nbsp;|&nbsp;<a href="# ">取消</a></div>
+		    		
+		    		<span class="follo ">关注：</span><span class="text-color ">4855</span>
+		    		<span class="follo ">贴子：</span><span class="text-color ">46891</span>
+		    		</div>
+		    	</div>
+		    	<div class="nav_wrap ">
+		    	<span>看贴</span>
+		    </div>
+		    <div class="p_thread ">
+		    	<div><span>14</span>回复贴，共<span>1</span>页</div>
+		    </div>
+		    <div class="core_title_wrap_bright ">
+		    	<span>微信3元体验48小时加粉都是骗子</span>
+		    	<span></span>
+		    	<span>只看楼主</span>
+		    	<span>收藏</span>
+		    	<span>回复</span>
+		    </div>
+		    <div class="l_post ">
+
+			<div class="clearfix">
+		    	<div class="headframe ">
+		    		<a href="# " class="landlord "></a>
+		    		<a href="# ">
+		    			<img src="__IMG__/jibenzl_03.jpg " width="88px "  height="88px "/>
+		    		</a>
+		    		<span>
+		    			{$bacontent.post_admin}aaaa
+		    		</span>
+		    	</div>
+		    	<div class="d_post_content ">
+					{$bacontent.post_content}
+		    		</div>
+		    	</div>
+
+			{volist name="replycontent" id="vo"}
+		    	<div class="clearfix">
+		    	<div class="headframe ">
+		    		<a href="# " class="landlord "></a>
+		    		<a href="# ">
+		    			<img src="{$vo.userinfo['headimgurl']} " width="88px "  height="88px "/>
+		    		</a>
+		    		<span>
+		    			{$vo.userinfo['username']}
+		    		</span>
+		    	</div>
+		    	<div class="d_post_content ">
+					{$vo.reply_content}
+		    		</div>
+		    	</div>
+			{/volist}
+
+		    </div>
+		    <div class="right_section ">
+		    	<div class="my_tieba_mod">
+		        <span>我在股吧</span><a href="#"><span>管理</span></a>
+		        <a href="#" class="media_left">
+		        	<img src="images/tx.jpg"/ width="80px" height="80px">
+		        </a>
+		        <div class="user_name_guba"><a href="#"><span>牵着蜗牛散步</span></a><a href="#"><span>我的等级</span></a></div>
+		        <div class="gray-text">我在股吧信息</div>
+		        <div class="lv-box">
+		        	<span class="gray-text">本吧牛人排行榜</span><span>中级粉丝</span>
+		        </div>
+		        <div class="exp-box">
+		        	<span class="gray-text">经验&nbsp;:</span><div class="exp-bar"><span class="progress"></span><div class="gray-text exp-text"><span class="orange-text">5</span>/<span>15</span></div></div>
+		        </div>
+		    	</div>
+		    	<div class="ranking-list">
+		    		<span class="gray-text ranking-list-title">股吧排行榜</span>
+		    		<ul class="gray-text">
+		    			<li><span>1</span><a href="#"><span>高考第2天11936</span></a></li>
+		    			<li><span>2</span><a href="#"><span>贴吧表白墙92311</span></a></li>
+		    			<li><span>3</span><a href="#"><span>魔神总司装了11604</span></a></li>
+		    			<li><span class="gray-bg">4</span><a href="#" ><span>十周年武器装扮一览8388</span></a></li>
+		    			<li><span class="gray-bg">5</span><a href="#"><span>进击的巨人1060</span></a></li>
+		    			<li><span class="gray-bg">6</span><a href="#"><span>王祖贤为考生加油0</span></a></li>
+		    			<li><span class="gray-bg">7</span><a href="#"><span>小龙虾替国足出征世界杯0</span></a></li>
+		    			<li><span class="gray-bg">8</span><a href="#"><span>高考作文哪家强</span></a></li>
+		    			<li><span class="gray-bg">9</span><a href="#"><span>FIFA最新排名0</span></a></li>
+		    			<li><span class="gray-bg">10</span><a href="#"><span>被数学打败了吗？</span></a></li>
+		    		</ul>
+		    	</div>
+		    </div>
+		    <div class="edit_show">
+		   	  <div class="edit_bar"><div class="edit_fl">发表回复</div>
+		   	    <div class="edit_fr">发帖请遵守协议及'七条底线'股吧投诉</div>
+		   	  </div>
+		   	  <div class="edit_find">
+		   	  	<textarea id="txtEditor" name="txtEditor" style="height:300px;width:100%;"></textarea>
+		   	  	
+		   	  </div>
+		   	  <div class="edit_submit" onclick="fabiao()">发表</div>
+		   </div>
+		   </div>
+		   
+		   
+	</div>
+		{include file='common/foot'}
+	</body>
+	<script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="__JS__/editor/kindeditor-all-min.js"></script>
+    <script type="text/javascript" src="__JS__/editor/lang/zh_CN.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        KindEditor.ready(function(K) {
+            var editor1 = K.create('textarea[name="newscontent"]', {
+                cssPath : 'kindeditor/plugins/code/prettify.css',
+                uploadJson : 'kindeditor/php/upload_json.php',
+                fileManagerJson : 'kindeditor/php/file_manager_json.php',
+                allowFileManager : true,
+                afterCreate : function() {
+                    var self = this;
+                    K.ctrl(document, 13, function() {
+                        self.sync();
+                        K('form[name=example]')[0].submit();
+                    });
+                    K.ctrl(self.edit.doc, 13, function() {
+                        self.sync();
+                        K('form[name=example]')[0].submit();
+                    });
+                }
+            });
+            prettyPrint();
+        });
+	  
+    </script>
+    <script>
+	function fabiao(){
+	var reply=editor.sync();
+	alert(reply);
+	}
+
+    </script>
+
+</html>

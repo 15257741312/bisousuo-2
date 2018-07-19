@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>币吧列表</title>
+
+    <meta name="description" content="Dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!--Basic Styles-->
+    <link href="__STATIC__/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+    <!--Basic Scripts-->
+    <script src="__STATIC__/admin/js/jquery-2.0.3.min.js"></script>
+    <script src="__STATIC__/admin/js/bootstrap.min.js"></script>
+    
+    <!-- 左侧导航栏 -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/style.css"/>
+    <script type="text/javascript" src="__STATIC__/admin/js/main.js"></script>
+
+</head>
+<body>
+    <!-- 缓冲 -->
+    {include file="common/loading" /}
+    
+    <!-- 头部菜单栏 -->
+    {include file="common/top" /}
+
+    <!-- 左侧菜单栏 -->
+    {include file="common/sidebar" /}
+
+    <!-- 主体 -->
+    <p style="margin: 1% 14%;">当前位置：内容 >论坛管理 >
+        <a href="{:url('Bbs/boardList')}">币吧列表 </a>
+    </p>
+    <div class="content">
+	    <form class="form-inline">
+			<div class="form-group">
+			    <label for="sel_title">标题：</label>
+			    <input type="email" class="form-control" id="sel_title" value="{$selTitle}">
+			</div>
+			<div class="form-group" style="width: 17%;margin-left: 1%;">
+				<label for="examine_type">审核状态：</label>
+				<select class="form-control" id="examine_type" style="margin-left: 3%;width: 68%;">
+                    <option value="0" {if $examineType == 0}selected="selected"{/if}>请选择</option>
+                    <option value="1" {if $examineType == 1}selected="selected"{/if}>未审核</option>
+                    <option value="2" {if $examineType == 2}selected="selected"{/if}>审核通过</option>
+                    <option value="3" {if $examineType == 3}selected="selected"{/if}>审核不通过</option>
+                </select>
+			</div>
+			<div class="form-group" style="width: 17%;margin-left: 1%;">
+				<label for="is_lock">锁定状态：</label>
+				<select class="form-control" id="is_lock" style="margin-left: 3%;width: 68%;">
+                    <option value="0" {if $isLock == 0}selected="selected"{/if}>请选择</option>
+                    <option value="1" {if $isLock == 1}selected="selected"{/if}>正常</option>
+                    <option value="2" {if $isLock == 2}selected="selected"{/if}>锁定</option>
+                </select>
+			</div>
+			<div class="form-group" style="width: 17%;margin-left: 1%;">
+				<label for="is_delete">隐藏状态：</label>
+				<select class="form-control" id="is_delete" style="margin-left: 3%;width: 68%;">
+                    <option value="0" {if $isDelete == 0}selected="selected"{/if}>请选择</option>
+                    <option value="1" {if $isDelete == 1}selected="selected"{/if}>正常</option>
+                    <option value="2" {if $isDelete == 2}selected="selected"{/if}>隐藏</option>
+                </select>
+			</div>
+			<input type="button" class="btn btn-default" onclick="selCont()" value="查询">
+		</form>
+	    <table class="table table-striped">
+	    	<tr style="text-align: center;">
+	    		<td style="">id</td>
+	    		<td style="text-align: left;width: 50%;">标题</td>
+	    		<td>创建者</td>
+	    		<td>审核状态</td>
+	    		<td>是否锁定</td>
+	    		<td>是否显示</td>
+	    		<td>操作</td>
+	    	</tr>
+	    	{volist name="boardList" id="vo"}
+			<tr style="text-align: center;">
+	    		<td>{$vo.id}</td>
+	    		<td style="text-align: left;">	
+	    			<a href="#" target="_blank">{$vo.smbo_title}</a>
+	    		</td>
+	    		<td>{$vo.smbo_owner}</td>
+	    		<td>
+					{if $vo.examine_type == 1 }<a href="#">未审核</a>
+	    			{elseif $vo.examine_type == 2 }审核通过
+	    			{else /}不通过
+	    			{/if}
+	    		</td>
+	    		<td>
+	    			{if $vo.is_lock == 1}正常
+    				{elseif $vo.is_lock == 2}锁定
+	    			{/if}
+	    		</td>
+	    		<td>
+	    			{if $vo.is_delete == 1}正常
+    				{elseif $vo.is_delete == 2}隐藏
+	    			{/if}
+	    		</td>
+	    		<td>
+	    			{if $vo.is_lock == 1}
+	    			<a href="javascript:void(0)" onclick="lockCont('{$vo.id}',2)">锁定</a>&nbsp
+    				{elseif $vo.is_lock == 2}
+	    			<a href="javascript:void(0)" onclick="lockCont('{$vo.id}',1)">解锁</a>&nbsp
+	    			{/if}
+
+	    			{if $vo.is_delete == 1}
+	    			<a href="javascript:void(0)" onclick="delCont('{$vo.id}',2)">隐藏</a>&nbsp
+    				{elseif $vo.is_delete == 2}
+	    			<a href="javascript:void(0)" onclick="delCont('{$vo.id}',1)">显示</a>&nbsp
+	    			{/if}
+
+	    			<a href="{:url('Bbs/postList')}?id={$vo['id']}">查看</a>&nbsp
+	    			<a href="{:url('Bbs/editBoard')}?id={$vo['id']}">编辑</a>&nbsp
+	    		</td>
+	    	</tr>
+			{/volist}
+	    </table>
+    </div>
+    <div style="float: right;margin: 1% 2% auto auto">
+	    {$boardList->render()}
+    </div>
+    <script type="text/javascript">
+        window.onload=function(){
+            $('.loading-container').hide();
+        }
+
+        function selCont(){
+        	var selTitle = $('#sel_title').val();
+        	var examineType = $('#examine_type').val();
+        	var isLock = $('#is_lock').val();
+        	var isDelete = $('#is_delete').val();
+
+          	window.location.href = "{:url('Bbs/boardList')}?selTitle="+selTitle+"&examineType="+examineType+"&isLock="+isLock+"&isDelete="+isDelete;
+        }
+
+        //是否隐藏
+        function delCont(id,type){
+        	if(type == 1){
+        		if(!confirm('确认显示吗？')){
+        			return false;
+        		}
+        	}else{
+        		if(!confirm('确认隐藏吗？')){
+        			return false;
+        		}
+        	}
+        	$.ajax({
+                url:"{:url('Bbs/delBoardAjax')}",
+                type:"POST",
+                dataType:"JSON",
+                async:false,
+                data:{
+                    id:id,
+                    type:type,
+                },
+                success:function(data){
+                    alert(data);
+                    window.location.reload();
+                },
+                error:function(data){
+                    alert('网络繁忙，请稍后再试！');
+                },
+            });
+        }
+
+        //是否锁定
+        function lockCont(id,type){
+        	if(type == 1){
+        		if(!confirm('确认解锁吗？')){
+        			return false;
+        		}
+        	}else{
+        		if(!confirm('确认锁定吗？')){
+        			return false;
+        		}
+        	}
+        	$.ajax({
+                url:"{:url('Bbs/lockBoardAjax')}",
+                type:"POST",
+                dataType:"JSON",
+                async:false,
+                data:{
+                    id:id,
+                    type:type,
+                },
+                success:function(data){
+                    alert(data);
+                    window.location.reload();
+                },
+                error:function(data){
+                    alert('网络繁忙，请稍后再试！');
+                },
+            });
+        }
+
+    </script>
+
+</body>
+</html>

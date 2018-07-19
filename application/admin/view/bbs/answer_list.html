@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>词条列表</title>
+
+    <meta name="description" content="Dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!--Basic Styles-->
+    <link href="__STATIC__/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+    <!--Basic Scripts-->
+    <script src="__STATIC__/admin/js/jquery-2.0.3.min.js"></script>
+    <script src="__STATIC__/admin/js/bootstrap.min.js"></script>
+    
+    <!-- 左侧导航栏 -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/style.css"/>
+    <script type="text/javascript" src="__STATIC__/admin/js/main.js"></script>
+</head>
+<body>
+    <!-- 缓冲 -->
+    {include file="common/loading" /}
+    
+    <!-- 头部菜单栏 -->
+    {include file="common/top" /}
+
+    <!-- 左侧菜单栏 -->
+    {include file="common/sidebar" /}
+
+    <!-- 主体 -->
+    <p style="margin: 1% 14%;">当前位置：内容 >论坛管理 >回答管理</p>
+    <div class="content">
+	    <form class="form-inline">
+			<!-- <div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				所有类型 <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a href="#">所有类型</a></li>
+					<li><a href="#">Another action</a></li>
+					<li><a href="#">Something else here</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="#">Separated link</a></li>
+				</ul>
+			</div> -->
+			<div class="form-group">
+				<label for="sel_title">内容：</label>
+				<input type="email" class="form-control" id="sel_content" value="{$selContent}">
+			</div>
+			<div class="form-group">
+			    <label for="sel_title">标题：</label>
+			    <input type="email" class="form-control" id="sel_title" value="{$selTitle}">
+			</div>
+			<div class="form-group" style="margin-left: 1%;">
+				<label for="sel_author">发布者：</label>
+				<input type="email" class="form-control" id="sel_author" value="{$selAuthor}">
+			</div>
+			<div class="form-group" style="width: 17%;margin-left: 1%;">
+				<label for="newsType">状态：</label>
+				<select class="form-control" id="newsType" style="margin-left: 3%;width: 68%;">
+                    <option value="0" {if $newsType==0}selected="selected"{/if}>请选择</option>
+                    <option value="1" {if $newsType==1}selected="selected"{/if}>显示</option>
+                    <option value="2" {if $newsType==2}selected="selected"{/if}>隐藏</option>
+                </select>
+			</div>
+			<input type="button" class="btn btn-default" onclick="selCont()" value="查询">
+		</form>
+	    <table class="table table-striped">
+	    	<tr style="text-align: center;">
+	    		<td style="">id</td>
+				<td style="text-align: left;">内容</td>
+	    		<td style="text-align: left;">标题</td>
+	    		<td>发布者</td>
+	    		<td>发布时间</td>
+	    		<td>状态</td>
+	    		<td>操作</td>
+	    	</tr>
+	    	{volist name="arr" id="vo"}
+			<tr style="text-align: center;">
+	    		<td>{$vo.id}</td>
+				<td style="text-align: left;width: 30%">{$vo.content}</td>
+				<td style="text-align: left;width: 20%"><a href="{:url('Bbs/editAsk')}?id={$vo.ask_id}">{$vo.ask_title|msubstr=0,10}</a></td>
+	    		<td>{$vo.username}</td>
+	    		<td>{$vo.addtime|date='Y-m-d H:i:s',###}</td>
+	    		<td>
+	    			{if $vo.is_delete==1}显示
+	    			{else /}隐藏
+	    			{/if}
+	    		</td>
+	    		<td>
+	    			<a href="{:url('Bbs/editAnswer')}?id={$vo.id}">编辑</a>&nbsp
+					{if $vo.is_delete==1}
+					<a href="javascript:;" onclick="del({$vo.id},2)">隐藏</a>&nbsp
+					{else/}
+					<a href="javascript:;" onclick="del({$vo.id},1)">显示</a>&nbsp
+					{/if}
+	    			<a href="javascript:void(0)" onclick="delAnswer('{$vo.id}');">删除</a>
+	    		</td>
+	    	</tr>
+			{/volist}
+	    </table>
+    </div>
+    <div style="float: right;margin: 1% 2% auto auto">
+	    {$arr->render()}
+    </div>
+
+    <script type="text/javascript">
+        window.onload=function(){
+            $('.loading-container').hide();
+
+        }
+
+        function del(id,type) {
+            if(type == 1){
+                if(!confirm('确认显示吗？')){
+                    return false;
+                }
+            }else{
+                if(!confirm('确认隐藏吗？')){
+                    return false;
+                }
+            }
+            $.ajax({
+                url:"{:url('Bbs/hideAnswer')}",
+                type:"POST",
+                dataType:"JSON",
+                async:false,
+                data:{
+                    id:id,
+                    type:type,
+                },
+                success:function(data){
+                    //alert(data.msg);
+                    window.location.reload();
+                },
+                error:function(data){
+                    alert('网络繁忙，请稍后再试！【5001】');
+                },
+            });
+
+        }
+
+        function selCont(){
+            var selContent=$("#sel_content").val();
+        	var selTitle = $('#sel_title').val();
+        	var selAuthor = $('#sel_author').val();
+        	var newsType = $('#newsType').val();
+          	window.location.href = "{:url('Bbs/answer')}?selTitle="+selTitle+"&selAuthor="+selAuthor+"&newsType="+newsType+"&selContent="+selContent;
+        }
+        function delAnswer(id){
+        	if(confirm('删除后数据无法恢复,确认删除吗？')){
+        		$.ajax({
+	                url:"{:url('Bbs/delAnswer')}",
+	                type:"POST",
+	                dataType:"JSON",
+	                async:false,
+	                data:{
+	                    id:id,
+	                },
+	                success:function(data){
+	                    //alert(data.msg);
+                    	window.location.reload();
+	                },
+	                error:function(data){
+	                    alert('网络繁忙，请稍后再试！【1001】');
+	                },
+	            });
+        	}
+        }
+
+    </script>
+
+</body>
+</html>

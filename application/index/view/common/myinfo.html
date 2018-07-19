@@ -1,0 +1,18 @@
+<div class="userinfo-wrap-top">
+    <img src="__STATIC__/uploads/{$mem.headimgurl}" />
+    <!--<span class="copy">编辑资料</span>-->
+    <div class="user_name-box">
+        <span class="user_name">{$mem.username}</span><span class="user_name2">用户名：<span>{$mem.username}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>吧龄：{$mem.age}年</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>发帖：{$mem.post}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>提问：{$mem.ask_c}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>吐槽：{$mem.spit}</span></span>
+    </div>
+    <!--<div class="userinfo_shortcut">-->
+    <!--<a href="#">服务中心</a>-->
+    <!--<a href="#">我在股吧</a>-->
+    <!--<a href="#">我的i股吧</a>-->
+    <!--</div>-->
+</div>
+<div class="ihome_nav_wrap">
+    <a href="{:url('info/myindex')}" class="tbnav_tab_inner {if $action=='myindex'}active-inhome ico-img1 {/if}">我的主页</a>
+    <a href="" class="tbnav_tab_inner ico-img2">股吧</a>
+    <a href="{:url('info/mywd_ask')}"  class="tbnav_tab_inner {if $action=='mywd_ask' ||  $action=='mywd_answer'}active-inhome ico-img3{/if} ">问答</a>
+    <a href="#" class="tbnav_tab_inner ico-img4">吐槽</a>
+</div>

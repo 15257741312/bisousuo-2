@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="__JS__/global.js"></script>
+    <script type="text/javascript" src="__JS__/common.js"></script>
+    <link rel="stylesheet" href="__CSS__/Basics.css" />
+    <link rel="stylesheet" type="text/css" href="__CSS__/interlocution.css"/>
+    <link rel="stylesheet" href="__CSS__/pagelist.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <title>问答</title>
+    <style>
+
+        .back_textarea{
+            /*display: none;*/
+        }
+        .ke-container{
+            width: 100% !important;
+        }
+        .wt-button2{
+            background: #fff;
+        }
+        .fold-btn{
+            border: 0px;
+        }
+        .datizhe{
+            margin-top: 20px;
+        }
+        @media screen and (min-width: 751px){
+            .wt-tu{
+                margin-bottom: 10px;
+                cursor: pointer;
+                float: left;
+            }
+            .mask {
+                filter: alpha(opacity=60);
+                background-color: #777;
+                z-index: 1002;
+                opacity:1.0;
+                -moz-opacity:1.0;
+                display: none;
+                height: auto !important;
+                border: none;
+            }
+            .mask img{
+                border: 0px solid grey;
+            }
+            .wt-button{
+                margin: 20px auto 0px 33px;
+            }
+
+        }
+        @media screen and (max-width: 751px){
+            .wt-tu{
+                cursor: pointer;
+                margin: 0 auto 10px auto;
+            }
+            .mask {
+                filter: alpha(opacity=60);
+                background-color: #777;
+                z-index: 1002;
+                opacity:1.0;
+                -moz-opacity:1.0;
+                display: none;
+                height: auto !important;
+                border: none;
+            }
+            .mask img{
+                border: 0px solid grey;
+            }
+            .wt-button{
+                margin-top: 0.2rem;
+            }
+
+        }
+    </style>
+    <link rel="stylesheet" href="__STATIC__/kindeditor/themes/default/default.css" />
+    <link rel="stylesheet" href="__STATIC__/kindeditor/themes/example1/example1.css" />
+    <link rel="stylesheet" href="__STATIC__/kindeditor/plugins/code/prettify.css" />
+    <script charset="utf-8" src="__STATIC__/kindeditor/kindeditor.js"></script>
+    <script charset="utf-8" src="__STATIC__/kindeditor/lang/zh_CN.js"></script>
+    <script charset="utf-8" src="__STATIC__/kindeditor/plugins/code/prettify.js"></script>
+    <style>
+        @media (min-width: 751px) {
+            .zl dl{
+                overflow: hidden;
+            }
+            .zl dl dt{
+                width: 110px;
+                float: left;
+            }
+            .zl dl dd{
+                width: 250px;
+                padding-left: 30px;
+                height: auto;
+                float: right;
+            }
+        }
+
+    </style>
+    <script type="text/javascript">
+        KindEditor.ready(function(K) {
+            var editor1 = K.create('textarea[name="back"]', {
+                cssPath : '__STATIC__/kindeditor/plugins/code/prettify.css',
+                uploadJson : '__STATIC__/kindeditor/php/upload_json.php',
+                fileManagerJson : '__STATIC__/kindeditor/php/file_manager_json.php',
+                allowFileManager : true,
+                themeType : 'example1',
+                items : [
+                    'image', 'multiimage',
+                    'insertfile','emoticons'
+                ],
+                afterCreate : function() {
+                    var self = this;
+                    K.ctrl(document, 13, function() {
+                        self.sync();
+                        K('form[name=example]')[0].submit();
+                    });
+                    K.ctrl(self.edit.doc, 13, function() {
+                        self.sync();
+                        K('form[name=example]')[0].submit();
+                    });
+                },
+                afterUpload : function(url, data, name) { //上传文件后执行的回调函数，必须为3个参数
+                    if(name=="image" || name=="multiimage"){ //单个和批量上传图片时
+                        var img = new Image(); img.src = url;
+                        img.onload = function(){ //图片必须加载完成才能获取尺寸
+                            if(img.width>600) editor1.html(editor1.html().replace('<img src="' + url + '"','<img src="' + url + '" width="600"'))
+                        }
+                    }
+                },
+            });
+            K.sync('.back_textarea');
+            prettyPrint();
+        });
+
+    </script>
+</head>
+<body>
+<div id="mask" class="mask">
+    {notempty name="$oneData.imgs"}
+        {volist name='$oneData.imgs' id='vo' empty=""}
+            <img src="__STATIC__/{$vo.source}" style="display: none" class="bigimg" alt="">
+        {/volist}
+    {/notempty}
+</div>
+<input type="hidden" value="{$Think.session.tel}" class="tel">
+        <div class="head">
+            {include file="../application/index/view/common/head.html"}
+            {include file="common/askanswer"}
+        </div>
+
+        <div class="content">
+            <div class="container">
+                <div class="left-content">
+                    <div class="text-item">
+                        <span class="user-name1">{$oneData.title}</span>
+                        <p class="xq-wt">{$oneData.content}</p>
+                        {notempty name="$oneData.imgs"}
+                            {volist name='$oneData.imgs' id='vo'}
+                                <img src="__STATIC__/{$vo.smallimg}" class="smallimg wt-tu" alt="">
+                            {/volist}
+                        {/notempty}
+                        <div class="yh-xx">
+                            <span>{$oneData.nickname ? $oneData.nickname : $oneData.user_phone}</span>
+                            <span>浏览{$oneData.view_count}次</span>
+                            <span>发表时间 {$oneData.addtime|date="Y-m-d H:i",###}</span>
+                            <div class="fx-fs">
+                                <a href=""><img src="__IMG__/qq.jpg"/></a>
+                                <a href=""><img src="__IMG__/kj.jpg"/></a>
+                                <a href=""><img src="__IMG__/wx.jpg"/></a>
+                                <a href=""><img src="__IMG__/wb.jpg"/></a>
+                            </div>
+                        </div>
+                        <form action="{:url('Askanswer/askDetail')}?id={$oneData.id}{if $keywords}&keywords={$keywords}{/if}" method="post">
+                            <textarea name="back" class="back_textarea" id="" cols="20" rows="15"></textarea>
+                            <input class="wt-button wt-button2" type="submit" name="sub" value="我有更好的答案" >
+                        </form>
+                    </div>
+                    {notempty name="$best_an"}
+                    <div class="text-item" style="border:none;">
+                       <span class="new-da">最佳答案</span>
+                       <span class="new-da-date">{$best_an.addtime | date="Y-m-d H:i",###}</span>
+                       <p class="da-conter">
+                         {$best_an.content}
+                       </p>
+                       <div class="cz">
+                           <div class="dian">
+                                <span class="active good"  {if $best_an.goodbad=="1"} style="background-image:url(__IMG__/tucao_23.jpg)" {/if} cid="{$best_an.aid}">{$best_an.praise}</span>
+                               <span cid="{$best_an.aid}" {if $best_an.goodbad=="2"} style="background-image:url(__IMG__/tucao_25.jpg)" {/if} class="bad">{$best_an.bad}</span>
+                           </div>
+                       </div>
+                       <div class="dz-xx">
+                        <a href=""><img src="__STATIC__/uploads/{$best_an.headimgurl}" width="80px" style="margin-top: 12px;margin-left: 20px;" class="dz-tx"/></a>
+                        <a href=""><span>{$best_an.nickname ? $best_an.nickname : $best_an.phone}</span></a>
+                        <!--<span class="lv">LV8</span>-->
+                        <div class="xinxi">
+                            <span >采集率：100%</span>
+                            <span>擅长：暂未定制</span>
+                        </div>
+                       </div>
+                    </div>
+                    {/notempty}
+                    {volist name="other_an" id="vo"}
+                    <div class="text-item">
+                         <p class="da-conter mb20">{$vo.content}</p>
+                         <p class="datizhe">
+                             <span>{$vo.nickname ? $vo.nickname : $vo.phone}</span>
+                             <!--<span class="lv">LV4</span>-->
+                             <span class="date">发布于{$vo.addtime | date="Y-m-d H:i",###}</span>
+                        </p>
+                         <div class="cz dt-wz">
+                           <div class="dian">
+                            <span class="active good" {if $vo.goodbad=="1"} style="background-image:url(__IMG__/tucao_23.jpg)" {/if} cid="{$vo.aid}">{$vo.praise}</span>
+                           <span class="bad" {if $vo.goodbad=="2"} style="background-image:url(__IMG__/tucao_25.jpg)" {/if} cid="{$vo.aid}">{$vo.bad}</span>
+                           </div>
+                       </div>
+                    </div>
+                    {/volist}
+                    <div class="fold-btn">
+                        {$other_an->render()}
+                     </div>
+                </div>
+                <div class="ringth-content">
+                    <div class="zl">
+                        <span class="zl-title">特邀专访</span>
+                        {volist name="res_men" id="vo"}
+                        <div>
+                            <dl>
+                                <dt><img src="__STATIC__/{$vo.article_img}" width="110px"/></dt>
+                                <dd>
+                                    <h3>{$vo.article_title}</h3>
+                                    <span class="z-title">{$vo.title_min}</span>
+                                    <span>{$vo.article_content}</span>
+                                </dd>
+                            </dl>
+                        </div>
+                        {/volist}
+                    </div>
+                    <div class="pl">
+                        <span class="pl-title">热点专题</span>
+                        <div>
+                            <img src="{$res_hot.thumbnail}" width="152px"/>
+                            <div class="dw4">
+                            <p>{$res_hot.title}</p>
+                            <span>{$res_hot.resource}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--<div class="pl">-->
+                        <!--<span class="pl-title">企业专栏</span>-->
+                        <!--<div>-->
+                            <!--<img src="__IMG__/wenda_26.jpg"/>-->
+                            <!--<div class="dw5">-->
+                            <!--<span>DRC金融科技</span>-->
+                            <!--<p>两会指引区块链产业健康发展-金色财经邀您共看未来</p>-->
+                            <!--</div>-->
+
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--<img src="__IMG__/wenda_26.jpg"/>-->
+                            <!--<div class="dw5">-->
+                            <!--<span>DRC金融科技</span>-->
+                            <!--<p>两会指引区块链产业健康发展-金色财经邀您共看未来</p>-->
+                            <!--</div>-->
+
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--<img src="__IMG__/wenda_26.jpg"/>-->
+                            <!--<div class="dw5">-->
+                            <!--<span>DRC金融科技</span>-->
+                            <!--<p>两会指引区块链产业健康发展-金色财经邀您共看未来</p>-->
+                            <!--</div>-->
+
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--<img src="__IMG__/wenda_26.jpg"/>-->
+                            <!--<div class="dw5">-->
+                            <!--<span>DRC金融科技</span>-->
+                            <!--<p>两会指引区块链产业健康发展-金色财经邀您共看未来</p>-->
+                            <!--</div>-->
+
+                        <!--</div>-->
+
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+
+    {include file='common/foot'}
+    </div>
+
+    <script src="js/layer/layer.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            //显示大图
+            function hideMask(){
+                $("#mask").hide();
+            }
+
+            $(".text-item img.smallimg").click(function (event) {
+                var bigimg_index=$("#mask img").length;
+                var smallimg_index=$(".smallimg").index(this);
+                $("#mask").css({"width":'auto',"height":"auto"});
+                $("#mask img").eq(smallimg_index).css({"width":"800px","height":"auto"}).show().siblings().hide();
+
+                $("#mask").show();
+                var w=$("#mask img").eq(smallimg_index).width();
+                var h=$("#mask img").eq(smallimg_index).height();
+                var win_w=$(window).width();
+                var win_h=$(window).height();
+                var margin_w=(win_w-w)/2;
+                var margin_h=(win_h-h)/2;
+                $("#mask").css({"margin":margin_h+"px "+margin_w+"px"});
+                event.stopPropagation();
+            })
+
+            $(document).click(function () {
+                $("#mask").hide();
+                $("#mask img").hide();
+            })
+
+            $(".wt-button").click(function () {
+                var tel=$(".tel").val();
+                if(tel==""){
+                    common.poplogin();
+                    return false;
+                }
+
+                var con=$(document.getElementsByTagName("iframe")[0].contentWindow.document.body).html();
+                if(con==""){
+                    return false;
+                }
+            })
+            
+            $(".pl-border").click(function () {
+                //$("textarea[name='back_area']").show().animate({height : "300px"})
+            })
+
+            $(".good").click(function () {
+                if($(".tel").val()=="") return false;
+                var num=$(this).html();
+                var self=$(this);
+                $.ajax({
+                    url : '{:url("Askanswer/goodbad")}',
+                    type : 'post',
+                    data : {
+                        cid : $(this).attr("cid"),
+                        goodbad : 1,
+                    },
+                    success : function (msg) {
+                        if(msg=="no") return;
+                        num=parseInt(num)+1;
+                        self.html(num);
+                        self.css({"background-image":"url(__IMG__/tucao_23.jpg)"});
+                    },
+                    error : function () {
+                        swal("网络连接失败");
+                    }
+                })
+            })
+
+            
+            $(".bad").click(function () {
+                if($(".tel").val()=="") return false;
+                var num=$(this).html();
+                var self=$(this);
+                $.ajax({
+                    url : '{:url("Askanswer/goodbad")}',
+                    type : 'post',
+                    data : {
+                        cid : $(this).attr("cid"),
+                        goodbad : 2,
+                    },
+                    success : function (msg) {
+
+                        if(msg=="no") return;
+                        num=parseInt(num)+1;
+                        self.html(num);
+                        self.css({"background-image":"url(__IMG__/tucao_25.jpg)"});
+                    },
+                    error : function () {
+                        swal("网络连接失败");
+                    }
+                })
+            })
+        </script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>新增新闻</title>
+
+    <meta name="description" content="Dashboard" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!--Basic Styles-->
+    <link href="__STATIC__/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+
+    <!--Beyond styles-->
+    <link id="beyond-link" href="__STATIC__/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+    <link href="__STATIC__/admin/css/add_news.css" rel="stylesheet" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+
+    <!--Basic Scripts-->
+    <script src="__STATIC__/admin/js/jquery-2.0.3.min.js"></script>
+    <script src="__STATIC__/admin/js/bootstrap.min.js"></script>
+
+    <!-- 富文本框 -->
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/admin/js/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/admin/js/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/admin/js/zh-cn.js"></script>
+    
+    <!-- 左侧导航栏 -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/style.css"/>
+    <script type="text/javascript" src="__STATIC__/admin/js/main.js"></script>
+
+    <!-- 图片裁剪 -->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/jquery.Jcrop.css"/>
+    <script type="text/javascript" src="__STATIC__/admin/js/jquery.Jcrop.js"></script>
+
+</head>
+<body>
+<script type="text/javascript">
+    window.onload = function (){
+        UE.getEditor('content').getContentTxt();
+    }
+</script>
+    <!-- 缓冲 -->
+    {include file="common/loading" /}
+
+    <!-- 头部菜单栏 -->
+    {include file="common/top" /}
+
+    <!-- 左侧菜单栏 -->
+    {include file="common/sidebar" /}
+
+    <!-- 主体 -->
+    <p class="address">当前位置：内容 >内容管理 >词条 >添加词条</p>
+    <div class="content">
+            <form style="border: 0px;">
+            <div style="width: 86%;height: auto;margin: 2% auto auto 7%;">
+                <!-- 横栏1 -->
+                <div style="height: 7rem;border-bottom: 1px dashed #d4dce6;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        <span style="color: red">*&nbsp</span>选择栏目
+                    </div>
+                    <div style="width: 22%;height: auto;float: left">
+                        <select class="form-control" id="column" style="margin-left: 3%;float: left;">
+                            <option value="0">请选择</option>
+                            {volist name="column" id="vo"}
+                            <option value={$vo.id}>{$vo.column_name}</option>
+                            {/volist}
+                        </select>
+                        <!-- <span class="remarks">
+                            只能选择最后一层
+                        </span> -->
+                    </div>
+                    <div style="margin-left: 50%;width: 30%;">
+                        <div style="float: left;line-height: 32px;text-align: right;">关联副栏目</div>
+                        <button class="btn btn-default" style="margin-left: 3%;float: left;">关联副栏目</button>
+                        <span class="remarks" style="margin-left: 17%;">关联后本条内容将会出现在所选的栏目页，需要结合标签使用</span>
+                    </div>
+                </div>
+
+                
+
+                <!-- 横栏2 -->
+                <div style="height: 7rem;border-bottom: 1px dashed #d4dce6;padding-top: 1.3%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        关联专题
+                    </div>
+                    <div style="width: 22%;height: auto;float: left;">
+                        <select class="form-control" id="special" style="margin-left: 3%;">
+                            <option value="0">请选择</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 横栏3 -->
+                <div style="height: 7rem;border-bottom: 1px dashed #d4dce6;padding-top: 1.3%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        <span style="color: red">*&nbsp</span>标题
+                    </div>
+                    <div style="width: 22%;height: auto;float: left;">
+                        <input type="text" name="title" class="form-control" id="title" style="margin-left: 3%;">
+                    </div>
+                </div>
+
+                <!-- 横栏4 -->
+                <div style="height: 8rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        简短标题
+                    </div>
+                    <div style="width: 22%;height: auto;float: left">
+                        <input type="text" name="title_min" class="form-control" id="title_min" style="margin-left: 3%;">
+                        <span class="remarks">
+                            在列表中显示，留空则显示完整标题
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 横栏5 -->
+                <div id="logo" style="height: 13rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        <span style="color: red">*&nbsp</span>logo
+                    </div>
+                    <div style="width: 30%;height: auto;float: left;float: left;position: relative;">
+                        <img style="width: 100px;height: 100px;margin-left: 4%;float: left;" id="article_img" src="">
+                        <input type="hidden" id="img_url">
+                        <input type="file" id="myfile" style="display: none;" name="imageFile" onchange="uploadImg();" />
+                        <button type="button" class="btn btn-info" onclick="$('#myfile').click()" style="float: left;margin-left: 1%;position: absolute;bottom: 0px;">图片上传</button>
+                        <button type="button" class="btn btn-info" onclick="clearImg()" style="float: left;margin-left: 1%;position: absolute;bottom: 0px;right: 32%;">图片删除</button>
+                    </div>
+                </div>
+
+                <!-- 横栏6 -->
+                <div style="height: 8rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        tag标签
+                    </div>
+                    <div style="width: 75%;height: auto;float: left">
+                        <input type="text" class="form-control" id="tag" style="margin-left: 1%;">
+                        <span class="remarks" style="margin: 0;margin: 1% auto auto 1%;">
+                            用","分开
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 横栏7 -->
+                <div style="height: 11rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        摘要
+                    </div>
+                    <div style="width: 75%;height: auto;float: left">
+                        <textarea type="text" name="abstract" class="form-control" id="abstract" rows="3" style="margin-left: 1%;"></textarea>
+                    </div>
+                </div>
+
+                <!-- 横栏8 -->
+                <div style="height: 7rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        作者
+                    </div>
+                    <div style="width: 15%;height: auto;float: left">
+                        <input type="text" name="author" class="form-control" id="author" value="admin" style="margin-left: 3%;">
+                    </div>
+                    <div style="width: 3%;float: left;line-height: 32px;margin-left: 3%;">
+                        来源
+                    </div>
+                    <div style="width: 9%;height: auto;float: left">
+                        <input type="text" name="source" class="form-control" id="source" style="margin-left: 3%;">
+                    </div>
+                    <div style="width: 4%;float: left;line-height: 32px;margin-left: 3%;">
+                        来源地址
+                    </div>
+                    <div style="width: 38%;height: auto;float: left">
+                        <input type="text" name="source_addr" class="form-control" id="source_addr" style="margin-left: 3%;">
+                    </div>
+                </div>
+
+                <!-- 横栏9 -->
+                <div style="height: 6rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;padding-left: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;">
+                        浏览权限
+                    </div>
+                    <label class="checkbox-inline" style="line-height: 32px;">
+                      <input type="checkbox" id="ordi_vip" value="ordi_vip" style="height: 26px;"> 普通会员
+                    </label>
+                    <label class="checkbox-inline" style="line-height: 32px;">
+                      <input type="checkbox" id="seni_vip" value="seni_vip" style="height: 26px;"> 高级会员
+                    </label>
+                </div>
+
+
+                <!-- 横栏10 -->
+                <div style="height: 8rem;border-bottom: 1px dashed #d4dce6;padding-top: 1.3%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        <span style="color: red">*&nbsp</span>内容类型
+                    </div>
+                    <div style="width: 22%;height: auto;float: left;">
+                        <select class="form-control" id="cont_type" style="margin-left: 3%;">
+                            <option value="0">请选择</option>
+                            <option value="1">普通</option>
+                            <option value="2">项目</option>
+                            <option value="3">人物</option>
+                            <option value="4">术语</option>
+                            <option value="5">矿机</option>
+                            <option value="6">钱包</option>
+                            <option value="7">交易所</option>
+                        </select>
+                    </div>
+                    <div style="width: 4%;float: left;line-height: 32px;margin-left: 3%;display: none;" class="transaction_div">
+                        交易所
+                    </div>
+                    <div style="width: 47%;height: auto;float: left;display: none;" class="transaction_div">
+                        <input type="text" name="transaction" class="form-control" id="transaction">
+                        <span class="remarks" style="margin: 0;margin-top: 1%;">
+                            用"、"隔开
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 横栏11 -->
+                <div style="height: 64rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div style="width: 5%;float: left;line-height: 32px;text-align: right;">
+                        内容
+                    </div>
+                    <script id="editor" type="text/plain" style="width:1024px;height:500px;margin-left: 6%;"></script>
+                </div>
+
+                <!-- 横栏12 -->
+                <div style="height: 6rem;border-bottom: 1px dashed #d4dce6;padding-top: 1%;">
+                    <div>
+                        <button type="button" class="btn btn-primary" id="preview" style="float: left;margin-left: 6%;width: 6%;">预览</button>
+                        <button type="button" class="btn btn-primary" id="submit" style="float: left;margin-left: 1%;width: 6%;">提交</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+    </div>
+<script type="text/javascript">
+
+        //实例化富文本编辑器
+        var ue = UE.getEditor('editor',{
+            //设置编辑器高度
+            initialFrameHeight:500,
+            //设置不自动调整高度
+            scaleEnabled:true
+        });
+
+        
+        
+        window.onload=function(){
+            $('.loading-container').hide();
+        }
+
+        //预览
+        $('#preview').click(function(){
+            if($('#column').val() == 0){
+                alert('请选择栏目');
+            }else if($('#title').val() == ''){
+                alert('请填写标题');
+            }else if($('#cont_type').val() == 0){
+                alert('请选择类别');
+            }else{
+                var editor = ue.getContent();
+                $.ajax({
+                    url:"{:url('Index/previewContAjax')}",
+                    type:"POST",
+                    dataType:"JSON",
+                    async:false,
+                    data:{
+                        column:$('#column').val(),
+                        special:$('#special').val(),
+                        title:$('#title').val(),
+                        title_min:$('#title_min').val(),
+                        tag:$('#tag').val(),
+                        abstract:$('#abstract').val(),
+                        author:$('#author').val(),
+                        source:$('#source').val(),
+                        source_addr:$('#source_addr').val(),
+                        ordi_vip:Number($('#ordi_vip').prop("checked")),
+                        seni_vip:Number($('#seni_vip').prop("checked")),
+                        cont_type:$('#cont_type').val(),
+                        transaction:$('#transaction').val(),
+                        editor:editor,
+                        article_img:$('#img_url').val(),
+                    },
+                    success:function(data){
+                        $('#submit').after("<a href='{:url('Index/previewCont')}?id="+data+"' id='pr' target='_blank'></a>");
+                        document.getElementById("pr").click();
+                    },
+                    error:function(data){
+                        alert('网络繁忙，请稍后再试！');
+                    },
+                });
+            }
+        })
+
+        //提交
+        $('#submit').click(function(){
+            if($('#column').val() == 0){
+                alert('请选择栏目');
+            }else if($('#title').val() == ''){
+                alert('请填写标题');
+            }else if($('#cont_type').val() == 0){
+                alert('请选择类别');
+            }else{
+                var editor = ue.getContent();
+                $.ajax({
+                    url:"{:url('Index/addContentAjax')}",
+                    type:"POST",
+                    dataType:"JSON",
+                    async:false,
+                    data:{
+                        column:$('#column').val(),
+                        special:$('#special').val(),
+                        title:$('#title').val(),
+                        title_min:$('#title_min').val(),
+                        tag:$('#tag').val(),
+                        abstract:$('#abstract').val(),
+                        author:$('#author').val(),
+                        source:$('#source').val(),
+                        source_addr:$('#source_addr').val(),
+                        ordi_vip:Number($('#ordi_vip').prop("checked")),
+                        seni_vip:Number($('#seni_vip').prop("checked")),
+                        cont_type:$('#cont_type').val(),
+                        transaction:$('#transaction').val(),
+                        editor:editor,
+                        article_img:$('#img_url').val(),
+                    },
+                    success:function(data){
+                        if(data == '新增失败'){
+                            alert('添加词条失败啦，去瞅瞅另外一个相同的词条名吧');
+                            return false;
+                        }
+                        alert(data);
+                        window.location.href="{:url('Index/wordsList')}";
+                    },
+                    error:function(data){
+                        alert('网络繁忙，请稍后再试！');
+                    },
+                });
+            }
+        })
+
+        //币种关联交易所input框
+        $('#cont_type').change(function(){
+            if($('#cont_type').val() == '2'){
+                $('.transaction_div').show();
+            }else{
+                $('.transaction_div').hide();
+            }
+        })
+
+        //图片上传
+        function uploadImg(){
+            // FormData对象，来发送二进制文件。
+            var formdata = new FormData();
+            //将文件追加到formdata对象中
+            formdata.append("myfile",document.getElementById('myfile').files[0]);
+            $.ajax({
+                url:"{:url('Index/logoUploadAjax')}",
+                type:"POST",
+                data:formdata,
+                 /** 
+                 * 必须false才会避开jQuery对 formdata 的默认处理 
+                 * XMLHttpRequest会对 formdata 进行正确的处理 
+                 */ 
+                 processData: false, 
+                 // 告诉jQuery不要去设置Content-Type请求头 
+                 contentType: false, 
+                 dataType: "json", 
+                 success: function(data){
+                    $('#article_img').attr("src","/demo/public/upload/"+data);
+                    $('#img_url').val("/demo/public/upload/"+data);
+                }, 
+                error: function(jqXHR){
+                    alert(jqXHR); 
+                },
+            })
+        }
+
+        //清除图片
+        function clearImg(){
+            $('#article_img').attr("src","");
+            $('#img_url').val("");
+        }
+    </script>
+</body>
+</html>
