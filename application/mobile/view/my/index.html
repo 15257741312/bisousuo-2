@@ -8,26 +8,36 @@
 		<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/api.css"/>
     <link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/style.css"/>
 		<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/bi_style.css"/>
+		<script type="text/javascript" src="__STATIC__/js/jquery-1.9.1.min.js"></script>
+		<style type="text/css">
+			.ios{height: 20px;background-color: #fff;position: fixed;top: 0;width: 100%;}
+		</style>
+		
 	</head>
 	<body class="MyBody">
+		<input type="hidden" id="usertel" value="{$Think.session.tel}" name="">
 		<div id="wrap" class="flex-wrap flex-vertical">
+			<div id="ios"></div>
 			<div id="main" class="flex-con">
 	  		<div class="myTop">
-	        <div class="myShezhi"><img src="__STATIC__/mobile/image/shezhi.png" alt="设置"></div>
+	        <div class="myShezhi"><a class="islogin" href="{:url('My/setting')}"><img src="__STATIC__/mobile/image/shezhi.png" alt="设置"></a></div>
+	        {if $Think.session.tel}
 	        <dl class="myTouxaing" id="userON">
-	          <dt><img src="__STATIC__/mobile/image/myTou.png" alt="头像"></dt>
+	          <dt><img src="__STATIC__/uploads/{$userInfo.headimgurl}" alt="头像"></dt>
 	          <dd>
-	            <h3>Jane Roe</h3>
-	            <p>资料完善度10%></p>
+	            <h3>{$userInfo.username}</h3>
+	            <p>资料完善度{$userInfo.per}%</p>
 	          </dd>
 	        </dl>
-					<dl class="myTouxaing" id="userDOWN">
+	        {else/}
+			<dl class="myTouxaing" id="userDOWN">
 	          <dt class="huanying">欢迎来到币搜索</dt>
 	          <dd>
 	            <a href="{:url('Login/login')}"><div class="denglu">登录</div></a>
 	            <a href="{:url('Login/registe')}"><div class="zhuce">注册</div></a>
 	          </dd>
 	        </dl>
+	        {/if}
 	        <div class="myTopBot">
 	          <dl>
 	            <dd>积分</dd>
@@ -45,30 +55,36 @@
 	  		</div>
 	      <div class="myBot">
 	        <ul>
-	          <a href="#" class="myAborder"><li><img src="__STATIC__/mobile/image/mytiezi.png" alt="我的帖子">我的帖子</li></a>
-	          <a href="#"><li><img src="__STATIC__/mobile/image/myhuifu.png" alt="我的回复">我的回复</li></a>
+	          <a href="#" class="myAborder islogin"><li><img src="__STATIC__/mobile/image/mytiezi.png" alt="我的帖子">我的帖子</li></a>
+	          <a href="#" class="islogin"><li><img src="__STATIC__/mobile/image/myhuifu.png" alt="我的回复">我的回复</li></a>
 	        </ul>
 	        <ul>
-	          <a href="#" class="myAborder"><li><img src="__STATIC__/mobile/image/mytiwen.png" alt="我的提问">我的提问</li></a>
-	          <a href="#"><li><img src="__STATIC__/mobile/image/myhuida.png" alt="我的回答">我的回答</li></a>
+	          <a href="#" class="myAborder islogin"><li><img src="__STATIC__/mobile/image/mytiwen.png" alt="我的提问">我的提问</li></a>
+	          <a href="#" class="islogin"><li><img src="__STATIC__/mobile/image/myhuida.png" alt="我的回答">我的回答</li></a>
 	        </ul>
 	        <ul>
-	          <a href="#"><li><img src="__STATIC__/mobile/image/mytucao.png" alt="我的吐槽">我的吐槽 </li></a>
+	          <a href="#" class="islogin"><li><img src="__STATIC__/mobile/image/mytucao.png" alt="我的吐槽">我的吐槽 </li></a>
 	        </ul>
 	      </div>
 			</div>
 			{include file="common/footer"}
 		</div>
-		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 		<script>
 		$(function(){
-			if ($('#userON dd h3').text() == 'Jane Roe') {
-				$('#userON').hide();
-				$('#userDOWN').show();
-			}else{
-				$('#userON').show();
-				$('#userDOWN').hide();
-			}
+			//苹果系统顶部状态栏兼容
+			var u = navigator.userAgent, app = navigator.appVersion;
+	    	var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		    if (isIOS) {
+		　　　　//这个是ios操作系统
+				$('#ios').addClass('ios');
+				$('#main').css('marginTop','20px');
+		    }
+
+		    $(".islogin").click(function(){
+		    	if($("#usertel").val()==""){
+		    		return false;
+		    	}
+		    })
 		});
 		</script>
 	</body>

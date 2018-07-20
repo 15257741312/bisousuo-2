@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:91:"D:\phpstudy\PHPTutorial\WWW\bisousuo-2\public/../application/mobile\view\login\registe.html";i:1531989700;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:91:"D:\phpstudy\PHPTutorial\WWW\bisousuo-2\public/../application/mobile\view\login\registe.html";i:1531991447;}*/ ?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -9,15 +9,6 @@
 		<link rel="stylesheet" type="text/css" href="/bisousuo-2/public/static/mobile/css/bi_style.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/bi_style.css"/>
 		<script type="text/javascript" src="/bisousuo-2/public/static/js/jquery-1.9.1.min.js"></script>
-		<style type="text/css">
-			.sendout{
-				 background-color: #a6a6a6;
-			}
-			.huoquuanzhengma{
-				outline: none;
-    			border: none;
-			}    
-		</style>
 	</head>
 	<body>
 		<div id="wrap" class="flex-wrap flex-vertical">

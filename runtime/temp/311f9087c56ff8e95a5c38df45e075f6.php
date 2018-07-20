@@ -1,0 +1,79 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:95:"D:\phpstudy\PHPTutorial\WWW\bisousuo-2\public/../application/mobile\view\index\news_detail.html";i:1532051420;}*/ ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="x-frame-options" content="allowall" />
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<!-- 
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_iwwlmmalrznkx1or.css">
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_306555_7a99p45etlkrzfr.css">
+ -->
+ <link rel="stylesheet" type="text/css" href="/bisousuo-2/public/static/mobile/css/bi_style.css"/>
+ <script type="text/javascript">
+     /**
+ * Created by Administrator on 2017/10/6.
+ */
+ 
+window.onload=function () {
+ 
+    //设置ifame src
+    setIfsameSrc();
+ 
+   //goback
+    goBack();
+ 
+    
+    //初始化第三方网页的跳转链接
+
+ 
+}
+ 
+function goBack() {
+    var backicon=document.getElementsByClassName("back-icon")[0];
+ 
+    backicon.onclick=function () {
+//      window.location.href="newList.html";
+        window.history.go(-1);
+    }
+ 
+}
+  
+function setIfsameSrc() {
+    // var url=window.location.search;
+    // if(url.indexOf("?") != -1){
+
+    //     // var urlArr = url.split("?")[1];
+    //     // alert(urlArr);
+
+    //     // console.log(urlArr);
+
+    // }
+    
+    //alert(url.substr(1));
+    var newIframe=document.getElementById("newIframe");
+    //newIframe.src='https://www.7234.cn/news/69242';
+    newIframe.src="https://www.7234.cn/news/69242";
+}
+
+
+ </script>
+ <style type="text/css">
+ 	.newIframe{width: 100%;border: none;height: 100em;}
+ </style>
+</head>
+<body>
+	<div id="wrap" class="flex-wrap flex-vertical">
+		<!--top-->
+		<header class="baike2Top" id="aui-header" style="position:fixed;top:0;background-color:#fff;z-index: 999;">
+			<a href="javascript:history.go(-1)"><img src="/bisousuo-2/public/static/mobile/image/baike_04_03.jpg"/></a>
+      		<span>newDetail</span>
+		</header>
+		<!--内容-->
+		<div id="main" class="flex-con" style="margin-top: 70px;">
+			<iFrame id="newIframe" src="" class="newIframe"  scrolling="no"></iFrame>
+		</div>
+	</div>
+</body>
+</html>

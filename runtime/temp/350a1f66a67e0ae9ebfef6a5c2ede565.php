@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:89:"D:\phpstudy\PHPTutorial\WWW\bisousuo-2\public/../application/mobile\view\index\index.html";i:1531983085;s:81:"D:\phpstudy\PHPTutorial\WWW\bisousuo-2\application\mobile\view\common\footer.html";i:1531909912;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:89:"D:\phpstudy\PHPTutorial\WWW\bisousuo-2\public/../application/mobile\view\index\index.html";i:1532053359;s:81:"D:\phpstudy\PHPTutorial\WWW\bisousuo-2\application\mobile\view\common\footer.html";i:1531909912;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -8,13 +8,13 @@
     <title>首页</title>
     <link rel="stylesheet" type="text/css" href="/bisousuo-2/public/static/mobile/css/style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
-		<link rel="stylesheet" type="text/css" href="/bisousuo-2/public/static/mobile/css/bi_style.css"/>
-		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-		<style type="text/css">
-			#main{
-				-webkit-overflow-scrolling: touch;
-			}
-		</style>
+	<link rel="stylesheet" type="text/css" href="/bisousuo-2/public/static/mobile/css/bi_style.css"/>
+	<script type="text/javascript" src="/bisousuo-2/public/static/js/jquery-1.9.1.min.js"></script>
+	<style type="text/css">
+		#main{
+			-webkit-overflow-scrolling: touch;
+		}
+	</style>
 </head>
 <body>
 <div id="wrap" class="flex-wrap flex-vertical">
@@ -48,60 +48,18 @@
 		  	<ul>
 		  		<!--rewen-->
 		   		<li style="display: block">
-		   			<div class="indexZixun">
+		   			<?php if(is_array($news) || $news instanceof \think\Collection || $news instanceof \think\Paginator): $i = 0; $__LIST__ = $news;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
+		   			<a href="<?php echo url('Index/news_detail'); ?>?url=<?php echo $v['url']; ?>" class="a_news" _href="<?php echo $v['url']; ?>" target="_blank"><div class="indexZixun">
 			   				<dl>
 			   					<dd>
-			   						<article>俄罗斯能办世界杯才不仅仅是因为他们是战斗民族</article>
-			   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
+			   						<article><?php echo $v['title']; ?></article>
+			   						<p><?php echo $v['author']; ?> &nbsp;<?php echo date("Y-m-d",$v['time_num']); ?></p>
 			   					</dd>
-			   					<dt><img src="/bisousuo-2/public/static/mobile/image/zixun_03.jpg"/></dt>
+			   					<dt><img src="<?php echo $v['thumbnail']; ?>"/></dt>
 			   				</dl>
 		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>冬虫夏草被踢出保健圈子 &nbsp;神话要“凉凉”</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="/bisousuo-2/public/static/mobile/image/zixun_06.jpg"/></dt>
-		   				</dl>
-		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>有多少优秀的孩子，都毁在了父母的差评里！</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="/bisousuo-2/public/static/mobile/image/zixun_08.jpg"/></dt>
-		   				</dl>
-		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>孩子不想学就不学，那还要家长做什么！</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="/bisousuo-2/public/static/mobile/image/zixun_10.jpg"/></dt>
-		   				</dl>
-		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>孩子不想学就不学，那还要家长做什么！</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="/bisousuo-2/public/static/mobile/image/zixun_10.jpg"/></dt>
-		   				</dl>
-		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>孩子不想学就不学，那还要家长做什么！</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="/bisousuo-2/public/static/mobile/image/zixun_10.jpg"/></dt>
-		   				</dl>
-		   			</div>
+		   			</a>
+		   			<?php endforeach; endif; else: echo "" ;endif; ?>
 		   		</li>
 		  	</ul>
 			</div>
@@ -125,6 +83,7 @@
       autoplay: 3000,
       loop: true,
     });
+
   })
 
 </script>

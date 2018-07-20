@@ -280,9 +280,16 @@ class Login extends Common{
         return json_encode($baikeList);
 	}
 
+    //退出账号
 	public  function loginout(){
 	    Session::clear();
-	    $this->redirect(url("Login/login"));
+	    $this->redirect(url("Index/index"));
+    }
+
+    //切换账号
+    public function switchLogin(){
+        Session::clear();
+        $this->redirect("Login/login");
     }
 
     //微信登录

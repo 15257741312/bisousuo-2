@@ -7,13 +7,13 @@
     <title>首页</title>
     <link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
-		<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/bi_style.css"/>
-		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-		<style type="text/css">
-			#main{
-				-webkit-overflow-scrolling: touch;
-			}
-		</style>
+	<link rel="stylesheet" type="text/css" href="__STATIC__/mobile/css/bi_style.css"/>
+	<script type="text/javascript" src="__JS__/jquery-1.9.1.min.js"></script>
+	<style type="text/css">
+		#main{
+			-webkit-overflow-scrolling: touch;
+		}
+	</style>
 </head>
 <body>
 <div id="wrap" class="flex-wrap flex-vertical">
@@ -47,60 +47,18 @@
 		  	<ul>
 		  		<!--rewen-->
 		   		<li style="display: block">
-		   			<div class="indexZixun">
+		   			{volist name="news" id="v"}
+		   			<a href="{:url('Index/news_detail')}?url={$v.url}" class="a_news" _href="{$v.url}" target="_blank"><div class="indexZixun">
 			   				<dl>
 			   					<dd>
-			   						<article>俄罗斯能办世界杯才不仅仅是因为他们是战斗民族</article>
-			   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
+			   						<article>{$v.title}</article>
+			   						<p>{$v.author} &nbsp;{$v.time_num|date="Y-m-d",###}</p>
 			   					</dd>
-			   					<dt><img src="__STATIC__/mobile/image/zixun_03.jpg"/></dt>
+			   					<dt><img src="{$v.thumbnail}"/></dt>
 			   				</dl>
 		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>冬虫夏草被踢出保健圈子 &nbsp;神话要“凉凉”</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="__STATIC__/mobile/image/zixun_06.jpg"/></dt>
-		   				</dl>
-		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>有多少优秀的孩子，都毁在了父母的差评里！</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="__STATIC__/mobile/image/zixun_08.jpg"/></dt>
-		   				</dl>
-		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>孩子不想学就不学，那还要家长做什么！</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="__STATIC__/mobile/image/zixun_10.jpg"/></dt>
-		   				</dl>
-		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>孩子不想学就不学，那还要家长做什么！</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="__STATIC__/mobile/image/zixun_10.jpg"/></dt>
-		   				</dl>
-		   			</div>
-		   			<div class="indexZixun">
-		   				<dl>
-		   					<dd>
-		   						<article>孩子不想学就不学，那还要家长做什么！</article>
-		   						<p>资讯 &nbsp;2018/05/29 &nbsp;18:56</p>
-		   					</dd>
-		   					<dt><img src="__STATIC__/mobile/image/zixun_10.jpg"/></dt>
-		   				</dl>
-		   			</div>
+		   			</a>
+		   			{/volist}
 		   		</li>
 		  	</ul>
 			</div>
@@ -117,6 +75,7 @@
       autoplay: 3000,
       loop: true,
     });
+
   })
 
 </script>

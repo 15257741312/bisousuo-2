@@ -20,6 +20,12 @@ class Common extends Controller {
 
         $request=Request::instance();
         $this->assign("controller",$request->controller());
+
+        //登录后提供用户信息
+        if(Session::get("tel")){
+            $res=Db::name("User")->where("phone","=",Session::get("tel"))->find();
+            $this->assign("userInfo",$res);
+        }
 	}
 
 	//判断是否登录
@@ -29,4 +35,5 @@ class Common extends Controller {
             $this->redirect(url("Login/login"));
         }
     }
+
 }
